@@ -1,0 +1,51 @@
+---
+- name: Create L2VNI
+  hosts: 93180-1 93180-2
+  connection: local
+  gather_facts: no
+
+  vars_files:
+    - external_vars.yml
+
+  tasks:
+    - name: Create VLAN and map to to VNI
+      nxos_vlan:
+        vlan_id: "{{ vlan }}"
+        name: "test"
+        mapped_vni: "{{ vni }}"
+        admin_state: up
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        transport: "{{ transport }}"
+
+    - name: Add L2VNI to Overlay
+      nxos_vxlan_vtep_vni:
+        interface: nve1
+        vni: "{{ vni }}"
+        multicast_group: "{{ multicast_group }}"
+        suppress_arp: true
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        transport: "{{ transport }}"
+
+    - name: Add L2VNI to EVPN
+      nxos_evpn_vni:
+        vni: "{{ vni }}"
+        route_distinguisher: auto
+        route_target_both: auto
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        transport: "{{ transport }}"
+
+    - name: Put access port into the VLAN
+      nxos_switchport:
+        interface: "{{ interface }}"
+        mode: access
+        access_vlan: "{{ vlan }}"
+        host: "{{ inventory_hostname }}"
+        username: "{{ username }}"
+        password: "{{ password }}"
+        transport: "{{ transport }}"

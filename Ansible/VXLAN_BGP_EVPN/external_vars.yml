@@ -1,0 +1,4 @@
+---
+username: admin
+password: my_admin_password
+transport: nxapi
