@@ -1,0 +1,398 @@
+{
+	"variables": [],
+	"info": {
+		"name": "NX-API REST - VXLAN BGP EVPN",
+		"_postman_id": "bc9a66e5-5d5a-5184-c8b2-0ec699c6a475",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Create L2VNI",
+			"description": "",
+			"item": [
+				{
+					"name": "0. Auth",
+					"request": {
+						"url": "{{MGMT_IP}}/api/aaaLogin.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46Y2lzY28=",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang.data+xml",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"aaaUser\": {\n\t\t\"attributes\": {\n\t\t\t\"name\":\"admin\",\n\t\t\t\"pwd\":\"mypassword\"\n\t\t}\n\t}\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "1.1 Create VLAN and L2VNI",
+					"request": {
+						"url": "{{MGMT_IP}}/api/node/mo/sys/bd/bd-[vlan-200].json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46Y2lzY28=",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang.data+xml",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"l2BD\": {\n    \"attributes\": {\n      \"accEncap\": \"vxlan-20200\",\n      \"fabEncap\": \"vlan-200\",\n      \"pcTag\": \"1\"\n    }\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "1.2 Check config and status of VLAN and L2VNI",
+					"request": {
+						"url": "{{MGMT_IP}}/api/node/mo/sys/bd/bd-[vlan-200].json",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46Y2lzY28=",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang.data+xml",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"l2BD\": {\n    \"attributes\": {\n      \"accEncap\": \"vxlan-20200\",\n      \"fabEncap\": \"vlan-200\",\n      \"pcTag\": \"1\"\n    }\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "2.1 Add L2VNI to NVE Interface",
+					"request": {
+						"url": "{{MGMT_IP}}/api/node/mo/sys/epId-1/nws/vni-20200.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46Y2lzY28=",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang.data+xml",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nvoNw\": {\n    \"attributes\": {\n      \"isLegacyMode\": \"no\",\n      \"isMcastRange\": \"yes\",\n      \"mcastGroup\": \"239.239.239.100\",\n      \"suppressARP\": \"yes\",\n      \"vni\": \"20200\",\n      \"vniRangeMax\": \"20200\",\n      \"vniRangeMin\": \"20200\"\n    }\n  }\n}\n\n"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "2.2 Check config and status of L2VNI",
+					"request": {
+						"url": "{{MGMT_IP}}/api/node/mo/sys/epId-1/nws/vni-20200.json",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46Y2lzY28=",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang.data+xml",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nvoEp\": {\n    \"attributes\": {\n      \"epId\": \"1\",\n      \"hostReach\": \"bgp\"\n    },\n    \"children\": [\n      {\n        \"nvoNws\": {\n          \"children\": [\n            {\n              \"nvoNw\": {\n                \"attributes\": {\n                  \"isLegacyMode\": \"no\",\n                  \"isMcastRange\": \"yes\",\n                  \"mcastGroup\": \"239.239.239.100\",\n                  \"suppressARP\": \"yes\",\n                  \"vni\": \"20200\",\n                  \"vniRangeMax\": \"20200\",\n                  \"vniRangeMin\": \"20200\"\n                }\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "2.3 Check config and status of NVE Interface",
+					"request": {
+						"url": "{{MGMT_IP}}/api/node/mo/sys/epId-1.json?rsp-subtree=full",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46Y2lzY28=",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang.data+xml",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nvoEp\": {\n    \"attributes\": {\n      \"epId\": \"1\",\n      \"hostReach\": \"bgp\"\n    },\n    \"children\": [\n      {\n        \"nvoNws\": {\n          \"children\": [\n            {\n              \"nvoNw\": {\n                \"attributes\": {\n                  \"isLegacyMode\": \"no\",\n                  \"isMcastRange\": \"yes\",\n                  \"mcastGroup\": \"239.239.239.100\",\n                  \"suppressARP\": \"yes\",\n                  \"vni\": \"20200\",\n                  \"vniRangeMax\": \"20200\",\n                  \"vniRangeMin\": \"20200\"\n                }\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "3.1 Add L2VNI to EVPN",
+					"request": {
+						"url": "{{MGMT_IP}}/api/node/mo/sys/evpn/bdevi-[vxlan-20200].json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46Y2lzY28=",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang.data+xml",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rtctrlBDEvi\": {\n    \"attributes\": {\n      \"encap\": \"vxlan-20200\",\n      \"name\": \"vxlan-20200\",\n      \"rd\": \"rd:unknown:0:0\"\n    },    \n    \"children\": [\n      {\n        \"rtctrlRttP\": {\n          \"attributes\": {\n            \"type\": \"import\"\n          },\n          \"children\": [\n            {\n              \"rtctrlRttEntry\": {\n                \"attributes\": {\n                  \"rtt\": \"route-target:unknown:0:0\"\n                }\n              }\n            }\n          ]\n        }\n      },\n      {\n        \"rtctrlRttP\": {\n          \"attributes\": {\n            \"type\": \"export\"\n          },\n          \"children\": [\n            {\n              \"rtctrlRttEntry\": {\n                \"attributes\": {\n                  \"rtt\": \"route-target:unknown:0:0\"\n                }\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}\n"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "3.2 Get config and status of EVPN",
+					"request": {
+						"url": "{{MGMT_IP}}/api/node/mo/sys/evpn/bdevi-[vxlan-20200].json?rsp-subtree=full",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46Y2lzY28=",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang.data+xml",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"l2BD\": {\n    \"attributes\": {\n      \"accEncap\": \"vxlan-20200\",\n      \"fabEncap\": \"vlan-200\",\n      \"pcTag\": \"1\"\n    }\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "4.1 Assign access port to the VLAN",
+					"request": {
+						"url": "{{MGMT_IP}}/api/node/mo/sys/intf/phys-[eth1/41].json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46Y2lzY28=",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang.data+xml",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"l1PhysIf\": {\n    \"attributes\": {\n      \"accessVlan\": \"vlan-200\"\n    }\n  }\n}\n"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "5. Get NVE peers",
+					"request": {
+						"url": "{{MGMT_IP}}/api/node/mo/sys/epId-1.json?rsp-subtree=full",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46Y2lzY28=",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang.data+xml",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nvoEp\": {\n    \"attributes\": {\n      \"epId\": \"1\",\n      \"hostReach\": \"bgp\"\n    },\n    \"children\": [\n      {\n        \"nvoNws\": {\n          \"children\": [\n            {\n              \"nvoNw\": {\n                \"attributes\": {\n                  \"isLegacyMode\": \"no\",\n                  \"isMcastRange\": \"yes\",\n                  \"mcastGroup\": \"239.239.239.100\",\n                  \"suppressARP\": \"yes\",\n                  \"vni\": \"20200\",\n                  \"vniRangeMax\": \"20200\",\n                  \"vniRangeMin\": \"20200\"\n                }\n              }\n            }\n          ]\n        }\n      }\n    ]\n  }\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. Delete L2VNI",
+			"description": "",
+			"item": [
+				{
+					"name": "0. Auth",
+					"request": {
+						"url": "{{MGMT_IP}}/api/aaaLogin.json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46Y2lzY28=",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang.data+xml",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"aaaUser\": {\n\t\t\"attributes\": {\n\t\t\t\"name\":\"admin\",\n\t\t\t\"pwd\":\"mypassword\"\n\t\t}\n\t}\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "1. Remove VLAN from access port",
+					"request": {
+						"url": "{{MGMT_IP}}/api/node/mo/sys/intf/phys-[eth1/41].json",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46Y2lzY28=",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang.data+xml",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"l1PhysIf\": {\n    \"attributes\": {\n      \"accessVlan\": \"vlan-1\"\n    }\n  }\n}\n"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "2. Delete L2VNI from EVPN",
+					"request": {
+						"url": "{{MGMT_IP}}/api/node/mo/sys/evpn/bdevi-[vxlan-20200].json",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46Y2lzY28=",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang.data+xml",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "3. Remove L2VNI from NVE interface",
+					"request": {
+						"url": "{{MGMT_IP}}/api/node/mo/sys/epId-1/nws/vni-20200.json",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46Y2lzY28=",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang.data+xml",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "4. Remove VLAN and L2VNI",
+					"request": {
+						"url": "{{MGMT_IP}}/api/node/mo/sys/bd/bd-[vlan-200].json",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic YWRtaW46Y2lzY28=",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/yang.data+xml",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
