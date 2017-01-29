@@ -16,12 +16,16 @@ The delay between checks can be modified by editing DELAY_BETWEEN_CHECK (seconds
 
 Add the management IPs / hostnames of the switches to the file switches_ip.
 
+```
 $ ./ptp_monitoring.py switches_ip_file
+```
 
 Example:
+```
 $ ./ptp_monitoring.py switches_ip_file
 ***** Switch 93180-1 *****
 show ptp corrections
 PTP correction too high: switch=93180-1, correction=184, time=Sun Jan 29 10:58:27 2017 863202
 PTP correction too high: switch=93180-1, correction=186, time=Sun Jan 29 10:58:25 2017 864105
+```
 
