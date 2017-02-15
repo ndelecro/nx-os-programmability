@@ -1,0 +1,26 @@
+get_cookie () {
+	curl -X POST http://MY_SWITCH_IP/api/aaaLogin.json -d '{"aaaUser": {"attributes": {"name":"admin", "pwd":"cisco"} } }' -c cookie.txt
+}
+
+get_vlan () {
+	curl -b cookie.txt -X GET 'http://MY_SWITCH_IP/api/node/mo/sys/bd/bd-\[vlan-200\].json'
+}
+
+get_vlan_pretty () {
+	curl -b cookie.txt -X GET 'http://MY_SWITCH_IP/api/node/mo/sys/bd/bd-\[vlan-200\].json' | python -m json.tool
+}
+
+set_vlan () {
+	curl -b cookie.txt -X POST -d @vlan_l2_vni.json 'http://MY_SWITCH_IP/api/node/mo/sys/bd/bd-\[vlan-200\].json'
+}
+
+$ cat vlan_l2_vni.json
+{
+  "l2BD": {
+    "attributes": {
+      "accEncap": "vxlan-20200",
+      "fabEncap": "vlan-200",
+      "pcTag": "1"
+    }
+  }
+}
