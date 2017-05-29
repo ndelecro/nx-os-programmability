@@ -101,6 +101,7 @@ switch(config)# 2017 May 24 10:40:55 switch %NXSDK-4-WARNING_MSG:  nxsdk_app1 [2
 
 ```
 
-## Reference:
+## References:
 https://github.com/CiscoDevNet/NX-SDK
+
 http://www.cisco.com/c/en/us/td/docs/switches/datacenter/nexus9000/sw/7-x/programmability/guide/b_Cisco_Nexus_9000_Series_NX-OS_Programmability_Guide_7x/b_Cisco_Nexus_9000_Series_NX-OS_Programmability_Guide_7x_chapter_011010.html
