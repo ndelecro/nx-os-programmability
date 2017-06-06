@@ -37,7 +37,7 @@ def shutdown_interface(intf):
     file.write("shut\n")
     file.close()
     os.system("cat /tmp/nxsdk_cmd")
-    os.system("vsh -r /tmp/nxsdk_cmd")
+    cliP.execConfigCmd("/tmp/nxsdk_cmd")
 
 def prevent_rogue_gm():
     global cliP, sdk
