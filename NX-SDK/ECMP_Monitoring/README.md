@@ -15,11 +15,10 @@ A demo of the app can be found at https://youtu.be/IHSZ4hUmkvg.
 ## Usage:
 Copy ecmp_monitoring.py to the switch.
 
-Enable NX-SDK and Bash Shell in NX-OS, and configure Streaming Telemetry:
+Enable NX-SDK and Bash Shell in NX-OS:
 ```
 feature nxsdk
 feature bash-shell
-feature telemetry
 ```
 
 If you want to use streaming telemetry, enable it and configure it:
@@ -37,9 +36,13 @@ telemetry
     snsr-grp 1 sample-interval 10000
 ```
 
-You can use the HTTP streaming telemetry collector provided on https://github.com/ndelecro/Nexus-9K-Programmability/tree/master/Streaming_Telemetry/HTTP_Transport. Start it:
+You can use the HTTP streaming telemetry collector provided on https://github.com/ndelecro/Nexus-9K-Programmability/tree/master/Streaming_Telemetry/HTTP_Transport. Start it on your telemetry server:
 ```
 server# python http_receiver.py -vv -l 0
+Starting httpd on port 5000...
+verbose           = True
+more verbose      = True
+verbose print len = 0 (0 is unlimited)
 ```
 
 Verify that the connection to the collector is successful:
@@ -114,7 +117,7 @@ switch# 2018 Feb 13 12:43:38 switch %NXSDK-4-WARNING_MSG:   [28703]  [ecmp_monit
 
 A telemetry event will also be received by the collector:
 ```
-telemetry_server# start_http_receiver
+server# python http_receiver.py -vv -l 0
 Starting httpd on port 5000...
 verbose           = True
 more verbose      = True
