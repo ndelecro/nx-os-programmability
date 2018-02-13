@@ -31,6 +31,7 @@ def get_prefix_ifname(prefix):
 
 def find_ecmp_intf():
     global cliP, intf_list
+    found = False
 
     show_cmd = "show ip route"
     resp_json = json.loads(cliP.execShowCmd(show_cmd, nx_sdk_py.R_JSON))
@@ -43,11 +44,13 @@ def find_ecmp_intf():
             for nexthop in prefix["TABLE_path"]["ROW_path"]:
                 intf = get_prefix_ifname(nexthop["ipnexthop"])
                 intf_list.append(intf)
+            found = True
     print intf_list
-    syslog_str = "[%s] Found an ECMP bundle: %s --> %s" % \
-                      (sdk.getAppName(), prefix_ecmp, ', '.join(map(str, intf_list)))
-    t = sdk.getTracer()
-    t.event(str(syslog_str))
+    if (found):
+        syslog_str = "[%s] Found an ECMP bundle: %s --> %s" % \
+                          (sdk.getAppName(), prefix_ecmp, ', '.join(map(str, intf_list)))
+        t = sdk.getTracer()
+        t.event(str(syslog_str))
 
 def check_intf_load(intf):
     global cliP, sdk
