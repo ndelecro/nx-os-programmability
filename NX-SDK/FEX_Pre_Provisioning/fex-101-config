@@ -1,0 +1,12 @@
+interface Ethernet101/1/1
+switchport
+switchport mode access
+switchport access vlan 42
+no shut
+
+interface Ethernet101/1/2
+switchport
+switchport mode access
+switchport access vlan 42
+no shut
+
