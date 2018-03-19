@@ -1,0 +1,24 @@
+install feature-set fex
+feature-set fex
+
+fex 101
+  pinning max-links 1
+  description "FEX0101"
+
+interface port-channel101
+  switchport
+  switchport mode fex-fabric
+  fex associate 101
+
+interface port-channel101
+  switchport
+  switchport mode fex-fabric
+  fex associate 101
+
+interface Ethernet1/33
+  description FEX
+  switchport
+  switchport mode fex-fabric
+  fex associate 101
+  channel-group 101
+  no shutdown
