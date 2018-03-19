@@ -70,19 +70,21 @@ IP Route Table for VRF "default"
 switch#
 ```
 
-Start the app:
+Install the app:
 ```
-switch# run bash nohup /isan/bin/python /bootflash/ecmp_monitoring.py &
-```
-
-NX-OS will indicate that the app started, and found an ECMP bundle. 
-```
-switch# 2018 Feb 13 15:32:53 switch nxsdk: [ecmp_monitoring.py] Started service
-switch# 2018 Feb 13 15:32:55 switch nxsdk: [ecmp_monitoring.py] Found an ECMP bundle: 192.168.1.0/24 --> Eth1/19, Eth1/20
+switch# run bash
+bash-4.2$ sudo su
+bash-4.2# nohup /isan/bin/python /bootflash/ecmp_monitoring.py &
 ```
 
-Let's also verify that the app is running:
+Return to NX-OS. It should indicate that the app started and found an ECMP bundle. Let's also verify that the app is running:
 ```
+bash-4.2# exit
+bash-4.2$ exit
+switch# sh logging last 2
+2018 Feb 13 12:39:15 switch nxsdk: [ecmp_monitoring.py] Started service
+2018 Feb 13 12:39:17 switch nxsdk: [ecmp_monitoring.py] Found an ECMP bundle: 192.168.1.0/24 --> Eth1/19, Eth1/20
+switch#
 switch# show nxsdk internal service
 
 NXSDK Started/Temp unavailabe/Max services : 1/0/32
