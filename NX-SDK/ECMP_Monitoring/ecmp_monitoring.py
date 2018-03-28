@@ -10,10 +10,10 @@ import json
 import re
 import urllib2
 from pprint import pprint
-# To gain access to Cisco NXOS Infra SDK
+# To gain access to Cisco NX-OS Infra SDK
 import nx_sdk_py
 
-# Global Variables
+# Global variables
 cliP                = 0
 sdk                 = 0
 event_hdlr          = True
@@ -25,9 +25,24 @@ DELAY_BETWEEN_CHECK = 5
 def get_prefix_ifname(prefix):
     global cliP
 
+    print("get_prefix_ifname(%s)" % (str(prefix)))
     show_cmd = "show ip route %s " % (str(prefix))
+    print(show_cmd)
     resp_json = json.loads(cliP.execShowCmd(show_cmd, nx_sdk_py.R_JSON))
-    return resp_json["TABLE_vrf"]["ROW_vrf"]["TABLE_addrf"]["ROW_addrf"]["TABLE_prefix"]["ROW_prefix"]["TABLE_path"]["ROW_path"]["ifname"]    
+    print(json.dumps(resp_json))
+    try:
+        row_prefix = resp_json["TABLE_vrf"]["ROW_vrf"]["TABLE_addrf"]["ROW_addrf"]["TABLE_prefix"]["ROW_prefix"]
+    except KeyError:
+        return ""
+    if (int(row_prefix["ucast-nhops"]) != 1):
+        print("ucast-nhops != 1, returning")
+        return ""    
+    try:
+        ifname = row_prefix["TABLE_path"]["ROW_path"]["ifname"]
+    except KeyError:
+        return ""
+    print(ifname)
+    return ifname
 
 def find_ecmp_intf():
     global cliP, intf_list
@@ -43,12 +58,15 @@ def find_ecmp_intf():
             prefix_ecmp = prefix["ipprefix"]
             for nexthop in prefix["TABLE_path"]["ROW_path"]:
                 intf = get_prefix_ifname(nexthop["ipnexthop"])
-                intf_list.append(intf)
+                if (intf != ""):
+                    intf_list.append(intf)
             found = True
+            break
     print intf_list
     if (found):
         syslog_str = "[%s] Found an ECMP bundle: %s --> %s" % \
                           (sdk.getAppName(), prefix_ecmp, ', '.join(map(str, intf_list)))
+        print(syslog_str)
         t = sdk.getTracer()
         t.event(str(syslog_str))
 

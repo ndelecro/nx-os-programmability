@@ -27,7 +27,6 @@ The app requires NX-OS version 7.0(3)I7(3) minimum.
 Create the necessary fex-FEX_ID_config files that store your FEX HIF configs. For example:
 ```
 $ cat fex-101-config
-
 interface Ethernet101/1/1
 switchport
 switchport mode access
