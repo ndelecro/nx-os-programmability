@@ -14,7 +14,7 @@ import nx_sdk_py
 cliP                = 0
 sdk                 = 0
 event_hdlr          = True
-bw_threshold        = 10000000000
+bw_threshold        = 100000000000
 intf_list           = []
 # In seconds
 DELAY_BETWEEN_CHECK = 5
@@ -97,10 +97,10 @@ class pyCmdHandler(nx_sdk_py.NxCmdHandler):
 ### Overloaded NxRibMgrHandler class.
 class pyRibHandler(nx_sdk_py.NxRibMgrHandler):
     def postL3RouteCb(self,nxroute):
-        global intf_list, ribMgr
+        global intf_list, ribMgr, sdk
 
         debug_log("postL3RouteCb")
-        prefix   = nxroute.getAddress() + str("/") + str(nxroute.getMaskLen())
+        prefix = nxroute.getAddress() + str("/") + str(nxroute.getMaskLen())
         debug_log(prefix)
 
         if (nxroute.getL3NextHopCount() > 1):
@@ -119,7 +119,10 @@ class pyRibHandler(nx_sdk_py.NxRibMgrHandler):
                 debug_log("----> p2pIntfName: %s" % p2pIntfName)
                 intf_list.append(p2pIntfName)
                 nextHop = nxroute.getL3NextHop(False)
-
+            syslog_str = "[%s] Found an ECMP bundle: %s --> %s" % \
+              (sdk.getAppName(), prefix, ', '.join(map(str, intf_list)))
+            t = sdk.getTracer()
+            t.event(syslog_str)
         debug_log("end postL3RouteCb")
         return True
 
