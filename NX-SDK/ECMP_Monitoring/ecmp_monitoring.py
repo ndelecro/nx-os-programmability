@@ -1,4 +1,4 @@
-#! /isan/bin/python
+#! /isan/bin/nxpython
 
 import signal
 import datetime
