@@ -1,0 +1,13 @@
+---
+- name: VXLAN NETCONF
+  hosts: netconf_vteps
+  gather_facts: no
+
+  tasks:
+    - name: VXLAN
+      netconf_config:
+        hostkey_verify: False
+        datastore: running
+        username: admin
+        password: cisco
+        src: vxlan.xml

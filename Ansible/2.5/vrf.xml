@@ -1,0 +1,9 @@
+<config>
+<System xmlns="http://cisco.com/ns/yang/cisco-nx-os-device">
+  <inst-items>
+    <Inst-list>
+      <name>ansible</name>
+    </Inst-list>
+  </inst-items>
+</System>
+</config>

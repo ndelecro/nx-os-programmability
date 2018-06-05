@@ -1,0 +1,18 @@
+---
+- name: VXLAN NETCONF GENERIC
+  hosts: netconf_vteps
+
+  tasks:
+    - name: TEMPLATE
+      template:
+        src: vxlan.j2
+        dest: vxlan.config
+      vars:
+        vlan_id: 42000
+        vxlan_id: 90042
+        vlan_name: ansible jinja
+
+    - name: VXLAN
+      netconf_config:
+        datastore: running
+        src: vxlan.config

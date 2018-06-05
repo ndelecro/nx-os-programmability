@@ -1,0 +1,31 @@
+---
+- name: Delete L2VNI
+  hosts: nxos_vteps_nxapi
+
+  tasks:
+    - name: Reset access port VLAN
+      nxos_l2_interface:
+        interface: Ethernet1/41
+        mode: access
+        access_vlan: 1
+        provider: "{{ nxapi_provider }}"
+
+    - name: Remove L2VNI from EVPN
+      nxos_evpn_vni:
+        vni: 20200
+        state: absent
+        provider: "{{ nxapi_provider }}"
+
+    - name: Remove L2VNI from Overlay
+      nxos_vxlan_vtep_vni:
+        interface: nve1
+        vni: 20200
+        state: absent
+        provider: "{{ nxapi_provider }}"
+
+    - name: Remove VLAN
+      nxos_vlan:
+        vlan_id: 2200
+        mapped_vni: 20200
+        state: absent
+        provider: "{{ nxapi_provider }}"

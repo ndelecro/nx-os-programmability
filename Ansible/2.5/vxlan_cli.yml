@@ -1,0 +1,29 @@
+---
+- name: Create L2VNI
+  hosts: nxos_vteps_cli
+
+  tasks:
+    - name: Create VLAN and map to to VNI
+      nxos_vlan:
+        vlan_id: 2200
+        mapped_vni: 20200
+        admin_state: up
+
+    - name: Add L2VNI to Overlay
+      nxos_vxlan_vtep_vni:
+        interface: nve1
+        vni: 20200
+        multicast_group: 239.239.239.100
+        suppress_arp: true
+
+    - name: Add L2VNI to EVPN
+      nxos_evpn_vni:
+        vni: 20200
+        route_distinguisher: auto
+        route_target_both: auto
+
+    - name: Put access port into the VLAN
+      nxos_switchport:
+        interface: Ethernet1/41
+        mode: access
+        access_vlan: 2200

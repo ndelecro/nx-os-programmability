@@ -1,0 +1,9 @@
+---
+- name: VXLAN NETCONF
+  hosts: netconf_vteps
+
+  tasks:
+    - name: VXLAN
+      netconf_config:
+        datastore: running
+        src: vxlan.xml

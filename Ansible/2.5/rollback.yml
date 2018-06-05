@@ -1,0 +1,30 @@
+---
+- name: Rollback
+  hosts: 93180-FX-2
+
+  tasks:
+    - name: Create checkpoint
+      nxos_rollback:
+        checkpoint_file: backup.cfg
+        provider: "{{ nxapi_provider }}"
+
+    - name: VXLAN config
+      block:
+        - name: Create VLAN and map to the VNI
+          nxos_vlan:
+            vlan_id: 2200
+            mapped_vni: 20200
+            admin_state: up
+            provider: "{{ nxapi_provider }}"
+        - name: Add L2VNI to Overlay
+          nxos_vxlan_vtep_vni:
+            interface: nve1
+            vni: 20200
+            multicast_group: 239.239.239.100
+            provider: "{{ nxapi_provider }}"
+      rescue:
+        - debug: msg='error'
+        - name: Rollback to checkpoint
+          nxos_rollback:
+            rollback_to: backup.cfg
+            provider: "{{ nxapi_provider }}"

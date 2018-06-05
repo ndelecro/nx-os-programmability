@@ -1,0 +1,17 @@
+---
+- name: Patch
+  hosts: nxos_vteps_nxapi
+
+  tasks:
+    - name: Get the NX-OS version
+      nxos_facts:
+        gather_subset: "!interfaces"
+        provider: "{{ nxapi_provider }}"
+
+    - debug: var=ansible_net_version
+
+    - name: Apply patch
+      nxos_smu:
+        pkg: "nxos.CSCve91311-n9k_ALL-1.0.0-7.0.3.I6.1.lib32_n9000.rpm"
+        provider: "{{ nxapi_provider }}"
+      when: ansible_net_version == "7.0(3)I6(1)"
