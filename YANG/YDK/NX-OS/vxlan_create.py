@@ -1,9 +1,9 @@
 #! /usr/bin/python
-import logging                     
+import logging
 from ydk.providers import NetconfServiceProvider
 from ydk.services import CRUDService
 from ydk.models.cisco_nx_os import Cisco_NX_OS_device
-from ydk.filters import YFilter    
+from ydk.filters import YFilter
 
 def setup_logger():
    logger = logging.getLogger("ydk")
@@ -16,15 +16,15 @@ def setup_logger():
 
 setup_logger()
 
-crud = CRUDService()            
+crud = CRUDService()
 ncc = NetconfServiceProvider(address='93180-EX-1',
                              username='admin', password='cisco')
 
-s = Cisco_NX_OS_device.System() 
+s = Cisco_NX_OS_device.System()
 l = s.bd_items.bd_items.BDList()
 l.fabencap = 'vlan-123'
 l.name = 'ydk-vlan'
 l.accencap = 'vxlan-90001'
 s.bd_items.bd_items.bd_list.append(l)
 
-crud.create(ncc, s) 
+crud.create(ncc, s)

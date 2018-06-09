@@ -1,10 +1,10 @@
 #! /usr/bin/python
 
-import logging                     
+import logging
 from ydk.providers import NetconfServiceProvider
 from ydk.services import CRUDService
 from ydk.models.cisco_nx_os import Cisco_NX_OS_device
-from ydk.filters import YFilter    
+from ydk.filters import YFilter
 
 def dump(obj):
    for attr in dir(obj):
@@ -21,13 +21,13 @@ def setup_logger():
    logger.addHandler(handler)
 
 def crud_read(obj):
-   crud = CRUDService()            
+   crud = CRUDService()
    ncc = NetconfServiceProvider(address='93180-EX-1',
                                 username='admin', password='cisco')
    return crud.read(ncc, obj)
 
 def get_dy_peers():
-   s = Cisco_NX_OS_device.System() 
+   s = Cisco_NX_OS_device.System()
    l = s.eps_items.epid_items.EpList()
    l.peers_items.dy_peer_items.yfilter = YFilter.read
    s.eps_items.epid_items.ep_list.append(l)
