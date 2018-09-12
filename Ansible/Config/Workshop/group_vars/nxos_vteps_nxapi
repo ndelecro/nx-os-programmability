@@ -1,0 +1,6 @@
+---
+ansible_connection: local
+nxapi_provider:
+  username: admin
+  password: cisco
+  transport: nxapi

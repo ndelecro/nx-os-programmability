@@ -1,0 +1,10 @@
+---
+- name: Create VLAN
+  hosts: nxos_vteps_nxapi
+
+  tasks:
+    - name: Create VLAN
+      nxos_vlan:
+        vlan_id: FIXME
+        admin_state: up
+        provider: "{{ nxapi_provider }}"

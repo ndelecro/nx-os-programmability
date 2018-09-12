@@ -1,0 +1,10 @@
+---
+- name: Ping all underlay switches
+  hosts: nxos_vteps_nxapi
+
+  tasks:
+    - name: Ping the spine
+      nxos_ping:
+        dest: 10.60.0.103
+        vrf: management
+        provider: "{{ nxapi_provider }}"

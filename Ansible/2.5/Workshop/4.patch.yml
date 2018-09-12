@@ -1,0 +1,20 @@
+---
+- name: Patch
+  hosts: nxos_vteps_nxapi
+  vars:
+    my_patch: nxos_patch.rpm
+    my_ver: 7.0(3)I7(5)
+
+  tasks:
+    - name: Get the NX-OS version
+      nxos_facts:
+        gather_subset: "!interfaces"
+        provider: "{{ nxapi_provider }}"
+
+    - debug:
+        var: FIXME
+
+    - name: Apply OSPF patch
+      debug:
+        msg: "Applying the patch"
+      when: FIXME == "{{ my_ver }}"

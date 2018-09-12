@@ -1,0 +1,19 @@
+---
+- name: Create L2VNI
+  hosts: nxos_vteps_nxapi
+
+  tasks:
+    - name: Add L2VNI to Overlay
+      nxos_vxlan_vtep_vni:
+        interface: nve1
+        vni: 20200
+        multicast_group: 239.239.239.100
+        suppress_arp: true
+        provider: "{{ nxapi_provider }}"
+
+    - name: Add L2VNI to EVPN
+      nxos_evpn_vni:
+        vni: 20200
+        route_distinguisher: auto
+        route_target_both: auto
+        provider: "{{ nxapi_provider }}"
