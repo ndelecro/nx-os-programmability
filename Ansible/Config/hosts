@@ -1,9 +1,5 @@
 [nxos_vteps_nxapi]
-93180-EX-1
-# 93180-EX-2
-92160-1
-# 92160-2
-93180-FX-2
+# FIXME: add your hosts here
 
 [nxos_vteps_cli]
 # 93180-EX-1

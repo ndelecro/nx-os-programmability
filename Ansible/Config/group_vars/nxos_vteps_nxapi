@@ -1,6 +1,6 @@
 ---
 ansible_connection: local
 nxapi_provider:
-  username: admin
+  username: studentXX
   password: cisco
   transport: nxapi

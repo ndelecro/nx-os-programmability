@@ -1,5 +1,0 @@
----
-ansible_connection: netconf
-ansible_network_os: nxos
-ansible_user: admin
-ansible_ssh_pass: cisco
