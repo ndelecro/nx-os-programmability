@@ -10,8 +10,8 @@
 
     - name: Copy NX-OS image
       nxos_file_copy:
-        local_file: /root/img/nxos.9.2.1.bin
+        local_file: /root/img/nxos.XXX.bin
 
     - name: Install NX-OS
       nxos_install_os:
-        system_image_file: nxos.7.0.3.I7.1.bin
+        system_image_file: nxos.XXX.bin
