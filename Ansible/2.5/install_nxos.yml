@@ -1,0 +1,17 @@
+---
+- name: Install NX-OS
+  hosts: install_nxos_cli
+
+  tasks:
+    - name: Enable scp-server feature
+      nxos_feature:
+        feature: scp-server
+        state: enabled
+
+    - name: Copy NX-OS image
+      nxos_file_copy:
+        local_file: /root/img/nxos.9.2.1.bin
+
+    - name: Install NX-OS
+      nxos_install_os:
+        system_image_file: nxos.7.0.3.I7.1.bin

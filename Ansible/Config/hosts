@@ -6,3 +6,6 @@
 
 [netconf_vteps]
 93180-EX-2 ansible_connection=netconf ansible_network_os=nxos ansible_user=admin ansible_ssh_pass=cisco
+
+[install_nxos_cli]
+# FIXME: add your hosts here

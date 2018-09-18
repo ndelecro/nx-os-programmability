@@ -3,8 +3,12 @@
   hosts: nxos_vteps_nxapi
 
   tasks:
-    - name: Ping the spine
+    - name: Ping all underlay switches
       nxos_ping:
-        dest: 10.60.0.103
+        dest: "{{ item }}"
         vrf: management
         provider: "{{ nxapi_provider }}"
+      loop:
+        - FIXME
+        - FIXME
+        - FIXME
