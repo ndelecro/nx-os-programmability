@@ -6,14 +6,14 @@
     - name: Add L2VNI to Overlay
       nxos_vxlan_vtep_vni:
         interface: nve1
-        vni: FIXME
+        vni: FIXME_L2VNI
         multicast_group: 239.239.239.100
         suppress_arp: true
         provider: "{{ nxapi_provider }}"
 
     - name: Add L2VNI to EVPN
       nxos_evpn_vni:
-        vni: FIXME
+        vni: FIXME_L2VNI
         route_distinguisher: auto
         route_target_both: auto
         provider: "{{ nxapi_provider }}"

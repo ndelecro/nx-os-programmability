@@ -6,5 +6,6 @@
     - name: Create VLAN
       nxos_vlan:
         vlan_id: FIXME_VLAN
+        FIXME_parameter: FIXME_L2VNI
         admin_state: up
         provider: "{{ nxapi_provider }}"
