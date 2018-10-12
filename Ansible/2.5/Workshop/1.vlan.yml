@@ -1,6 +1,7 @@
 ---
 - name: Create VLAN
   hosts: nxos_vteps_nxapi
+  gather_facts: no
 
   tasks:
     - name: Create VLAN

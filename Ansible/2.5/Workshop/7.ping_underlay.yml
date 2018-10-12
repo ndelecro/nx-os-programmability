@@ -1,6 +1,7 @@
 ---
 - name: Ping all underlay switches
   hosts: nxos_vteps_nxapi
+  gather_facts: no
 
   tasks:
     - name: Ping all underlay switches

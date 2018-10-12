@@ -1,0 +1,8 @@
+feature interface-vlan
+feature vn-segment-vlan-based
+feature nv overlay
+feature bgp
+nv overlay evpn
+int nve1
+  host-reachability protocol bgp
+evpn

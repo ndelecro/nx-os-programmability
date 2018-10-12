@@ -1,6 +1,7 @@
 ---
 - name: Destroy L2VNI
   hosts: nxos_vteps_nxapi
+  gather_facts: no
 
   tasks:
     - name: Remove L2VNI from Overlay

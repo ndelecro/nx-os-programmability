@@ -1,6 +1,7 @@
 ---
 - name: Create L2VNI
   hosts: nxos_vteps_nxapi
+  gather_facts: no
 
   tasks:
     - name: Add L2VNI to Overlay
