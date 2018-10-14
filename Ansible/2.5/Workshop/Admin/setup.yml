@@ -1,6 +1,6 @@
 ---
-- name: Create student users
-  hosts: workshop
+- name: Setup workshop
+  hosts: workshop_admin
   gather_facts: no
 
   tasks:

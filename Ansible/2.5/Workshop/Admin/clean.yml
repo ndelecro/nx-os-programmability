@@ -1,0 +1,10 @@
+---
+- name: Clean workshop
+  hosts: workshop_admin
+  gather_facts: no
+  strategy: free
+
+  tasks:
+    - name: Clean workshop
+      nxos_config:
+        src: clean.j2

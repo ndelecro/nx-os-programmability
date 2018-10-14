@@ -1,0 +1,15 @@
+feature nxapi
+nxapi http port 80
+# on 1st-gen N9Ks: hardware access-list tcam region arp-ether 256 double-wide
+feature interface-vlan
+feature vn-segment-vlan-based
+feature nv overlay
+feature bgp
+nv overlay evpn
+int nve1
+  host-reachability protocol bgp
+evpn
+
+{% for i in range(10, 91) %}
+username student{{ i }} password cisco role network-admin
+{% endfor %}

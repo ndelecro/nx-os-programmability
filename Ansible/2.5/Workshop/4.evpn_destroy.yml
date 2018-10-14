@@ -7,6 +7,6 @@
     - name: Remove L2VNI from Overlay
       nxos_vxlan_vtep_vni:
         interface: nve1
-        vni: 20200
+        vni: FIXME_L2VNI
         FIXME_parameter: FIXME_value
         provider: "{{ nxapi_provider }}"
