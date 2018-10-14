@@ -4,13 +4,6 @@
   gather_facts: no
 
   tasks:
-    - name: Create student users
-      nxos_user:
-        name: "student{{ item }}"
-        configured_password: cisco
-        role: network-admin
-      with_sequence: start=10 end=90
-
-    - name: Misc config
+    - name: Setup workshop
       nxos_config:
-        src: workshop_nxos_config.txt
+        src: setup.j2

@@ -1,6 +1,13 @@
 feature nxapi
 nxapi http port 80
-# on 1st-gen N9Ks: hardware access-list tcam region arp-ether 256 double-wide
+
+# for ARP suppression on 1st-gen N9Ks and N9Kvs
+# hardware access-list tcam region vacl 0
+# hardware access-list tcam region e-racl 0
+# hardware access-list tcam region racl 0
+# hardware access-list tcam region vpc-convergence 0
+# hardware access-list tcam region arp-ether 256 double-wide
+
 feature interface-vlan
 feature vn-segment-vlan-based
 feature nv overlay
