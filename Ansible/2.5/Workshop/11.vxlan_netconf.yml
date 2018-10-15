@@ -1,0 +1,10 @@
+---
+- name: VXLAN NETCONF
+  hosts: nxos_vteps
+  gather_facts: no
+
+  tasks:
+    - name: VXLAN
+      netconf_config:
+        datastore: running
+        src: 11.vxlan_yang.txt

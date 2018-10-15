@@ -10,7 +10,7 @@ RUN	apt-get -y update && \
 	pip install scp
 
 # Ansible
-RUN	pip install ansible==2.6.1 && \
+RUN     pip install ansible==2.6.1 ncclient && \
 	mkdir /root/Ansible && \
 	svn checkout "https://github.com/ndelecro/nx-os-programmability/trunk/Ansible/2.5" /root/Ansible && \
 	mkdir /etc/ansible && \
@@ -26,10 +26,10 @@ RUN	wget https://devhub.cisco.com/artifactory/debian-ydk/0.7.2/libydk_0.7.2-1_am
 	gdebi --n /tmp/libydk_0.7.2-1_amd64.deb
 
 # YDK NX-OS
-RUN	pip install ydk-models-cisco-nx-os==0.7.4 && \
-	mkdir -p /root/YANG/NX-OS/YDK && \
-	svn checkout "https://github.com/ndelecro/nx-os-programmability/trunk/YANG/NX-OS/YDK" /root/YANG/NX-OS/YDK && \
-	wget https://github.com/YangModels/yang/blob/master/vendor/cisco/nx/7.0-3-I7-3/Cisco-NX-OS-device.yang?raw=true -O /root/YANG/NX-OS/YDK/Cisco-NX-OS-device.yang
+# RUN	pip install ydk-models-cisco-nx-os==0.7.4 && \
+# 	mkdir -p /root/YANG/NX-OS/YDK && \
+# 	svn checkout "https://github.com/ndelecro/nx-os-programmability/trunk/YANG/NX-OS/YDK" /root/YANG/NX-OS/YDK && \
+# 	wget https://github.com/YangModels/yang/blob/master/vendor/cisco/nx/7.0-3-I7-3/Cisco-NX-OS-device.yang?raw=true -O /root/YANG/NX-OS/YDK/Cisco-NX-OS-device.yang
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
