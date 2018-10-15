@@ -1,6 +1,6 @@
 ---
 - name: Destroy L2VNI
-  hosts: nxos_vteps_nxapi
+  hosts: nxos_vteps
   gather_facts: no
 
   tasks:
@@ -9,4 +9,3 @@
         interface: nve1
         vni: FIXME_L2VNI
         FIXME_parameter: FIXME_value
-        provider: "{{ nxapi_provider }}"

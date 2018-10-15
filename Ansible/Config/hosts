@@ -1,4 +1,4 @@
-[nxos_vteps_nxapi]
+[nxos_vteps]
 # FIXME: add your hosts here
 
 [nxos_vteps_cli]

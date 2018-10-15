@@ -1,6 +1,6 @@
 ---
 - name: Create VLAN
-  hosts: nxos_vteps_nxapi
+  hosts: nxos_vteps
   gather_facts: no
 
   tasks:
@@ -8,4 +8,3 @@
       nxos_vlan:
         vlan_id: FIXME_VLAN
         admin_state: up
-        provider: "{{ nxapi_provider }}"

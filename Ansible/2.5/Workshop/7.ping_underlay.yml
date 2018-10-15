@@ -1,6 +1,6 @@
 ---
 - name: Ping all underlay switches
-  hosts: nxos_vteps_nxapi
+  hosts: nxos_vteps
   gather_facts: no
 
   tasks:
@@ -8,7 +8,6 @@
       nxos_ping:
         dest: "{{ item }}"
         vrf: management
-        provider: "{{ nxapi_provider }}"
       loop:
         - FIXME
         - FIXME

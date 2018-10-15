@@ -1,6 +1,6 @@
 ---
 - name: Create L2VNI
-  hosts: nxos_vteps_nxapi
+  hosts: nxos_vteps
   gather_facts: no
 
   tasks:
@@ -10,11 +10,9 @@
         vni: FIXME_L2VNI
         multicast_group: 239.239.239.100
         suppress_arp: true
-        provider: "{{ nxapi_provider }}"
 
     - name: Add L2VNI to EVPN
       nxos_evpn_vni:
         vni: FIXME_L2VNI
         route_distinguisher: auto
         route_target_both: auto
-        provider: "{{ nxapi_provider }}"
