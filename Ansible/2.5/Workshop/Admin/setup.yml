@@ -2,6 +2,7 @@
 - name: Setup workshop
   hosts: workshop_admin
   gather_facts: no
+  strategy: free
 
   tasks:
     - name: Setup workshop

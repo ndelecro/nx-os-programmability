@@ -1,0 +1,9 @@
+---
+- name: Configure streaming telemetry destinations
+  hosts: nxos_vteps
+  gather_facts: no
+
+  tasks:
+    - name: Configure destinations
+      nxos_config:
+        FIXME: FIXME

@@ -1,0 +1,13 @@
+---
+- name: Configure a streaming telemetry destination
+  hosts: nxos_vteps
+  gather_facts: no
+
+  tasks:
+    - name: Configure destination
+      nxos_config:
+        parents:
+          - telemetry
+          - destination-group 55
+        lines:
+          - ip address 1.1.1.1 port 80 protocol HTTP encoding JSON
