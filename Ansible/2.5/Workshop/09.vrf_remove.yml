@@ -1,0 +1,10 @@
+---
+- name: Remove VRF
+  hosts: nxos_vteps
+  gather_facts: no
+
+  tasks:
+    - name: Remove VRF
+      nxos_vrf:
+        name: FIXME_MY_STUDENT_ID
+        state: absent

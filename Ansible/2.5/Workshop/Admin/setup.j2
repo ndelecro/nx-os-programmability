@@ -25,3 +25,7 @@ telemetry
 # {% for i in range(10, 91) %}
 # username student{{ i }} password cisco role network-admin
 # {% endfor %}
+
+{% for i in range(10, 91) %}
+vrf context {{ i }}
+{% endfor %}

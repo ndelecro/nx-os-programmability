@@ -11,4 +11,8 @@ no vlan 10-90
 # no username student{{ i }}
 # {% endfor %}
 
+{% for i in range(10, 91) %}
+no vrf context {{ i }}
+{% endfor %}
+
 no telemetry

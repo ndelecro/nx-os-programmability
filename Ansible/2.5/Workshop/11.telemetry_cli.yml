@@ -8,6 +8,6 @@
       nxos_config:
         parents:
           - telemetry
-          - destination-group 55
+          - destination-group FIXME_MY_STUDENT_ID
         lines:
           - ip address 1.1.1.1 port 80 protocol HTTP encoding JSON
