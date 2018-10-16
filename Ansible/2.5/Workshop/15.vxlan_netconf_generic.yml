@@ -1,0 +1,19 @@
+---
+- name: VXLAN NETCONF
+  hosts: nxos_vteps
+  gather_facts: no
+
+  tasks:
+    - name: Generate the YANG payload from the template
+      template:
+        src: 15.vxlan_yang.j2
+        dest: 15.vxlan_yang_payload.txt
+      vars:
+        vlan_id: FIXME_MY_STUDENT_ID
+        vxlan_id: 200FIXME_MY_STUDENT_ID
+        vlan_name: vlan-FIXME_MY_STUDENT_ID
+
+    - name: Send the YANG payload to the switch via NETCONF
+      netconf_config:
+        datastore: running
+        src: 15.vxlan_yang_payload.txt
