@@ -7,10 +7,9 @@ $ pip install robotframework
 ```
 root@3576a229c5c9:~/Robot/Cisco# cat validate_nxos.txt
 *** Settings ***
-Library
-    CiscoNxosLibrary
+Library	          CiscoNxosLibrary
 
-Suite Setup  Add Switches
+Suite Setup  	  Add Switches
 
 *** Test Cases ***
 Check version
@@ -25,12 +24,17 @@ Check version wrong
   Log   ${version}
   Should Be Equal   ${version['result']['body']['kickstart_ver_str']}   9.2(1)
 
+Check model type
+  Change To Switch    n9kv-4
+  ${mod}=  Run Cmds  show mod
+  Log   ${mod}
+  Should Be Equal   ${mod['result']['body']['TABLE_modinfo']['ROW_modinfo']['model']}   N9K-9000v
+
 *** Keywords ***
 Add Switches
   Add Switch    host=9372-1    user=admin    pwd=cisco
   Add Switch    host=n9kv-3    user=admin    pwd=cisco
   Add Switch    host=n9kv-4    user=admin    pwd=cisco
-root@3576a229c5c9:~/Robot/Cisco#
 root@3576a229c5c9:~/Robot/Cisco#
 root@3576a229c5c9:~/Robot/Cisco# pybot --pythonpath=CiscoLibrary validate_nxos.txt
 ==============================================================================
@@ -41,9 +45,11 @@ Check version                                                         | PASS |
 Check version wrong                                                   | FAIL |
 7.0(3)I7(5) != 9.2(1)
 ------------------------------------------------------------------------------
+Check model type                                                      | PASS |
+------------------------------------------------------------------------------
 Validate Nxos                                                         | FAIL |
-2 critical tests, 1 passed, 1 failed
-2 tests total, 1 passed, 1 failed
+3 critical tests, 2 passed, 1 failed
+3 tests total, 2 passed, 1 failed
 ==============================================================================
 Output:  /root/Robot/Cisco/output.xml
 Log:     /root/Robot/Cisco/log.html
