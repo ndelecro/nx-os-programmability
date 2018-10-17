@@ -19,7 +19,7 @@ class CiscoNxosLibrary(object):
         resp = self.post_clis(self.current_switch["host"],
                               self.current_switch["user"],
                               self.current_switch["pwd"],
-                              ["show version"])
+                              [str(commands)])
         return resp
 
     def post_payload(self, switch_IP, switch_user, switch_password, payload):

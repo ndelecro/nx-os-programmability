@@ -16,6 +16,12 @@ Check version wrong
   Log   ${version}
   Should Be Equal   ${version['result']['body']['kickstart_ver_str']}   9.2(1)
 
+Check model type
+  Change To Switch    n9kv-4
+  ${mod}=  Run Cmds  show mod
+  Log   ${mod}
+  Should Be Equal   ${mod['result']['body']['TABLE_modinfo']['ROW_modinfo']['model']}   N9K-9000v
+
 *** Keywords ***
 Add Switches
   Add Switch    host=9372-1    user=admin    pwd=cisco
