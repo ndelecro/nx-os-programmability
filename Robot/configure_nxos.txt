@@ -1,13 +1,30 @@
 *** Settings ***
-Library	     CiscoNxosLibrary
+Library	          CiscoNxosLibrary
 
 Suite Setup  Add Switches
 
 *** Test Cases ***
 Add a VLAN
-  Change To Switch    9372-1
+  Change To All Switches
   @{cmds}=    Create List    vlan 42    name vlan-42
   Configure   ${cmds}
+
+Ping before interface configuration
+  Change To Switch    9372-1
+  ${ping_output}=    Run Cmd   ping 10.0.9.0
+  ${match}      ${packet_loss}=      Should Match Regexp     ${ping_output['result']['msg']}  (\\d+\\.\\d+)% packet loss
+  Should Be Equal As Numbers   ${packet_loss}       0       msg="Packets lost percent not zero!!!"
+
+Configure IP on interface
+  @{cmds}=    Create List    int e1/49  ip address 10.0.9.1/31
+  Configure   ${cmds}
+  sleep       5
+
+Ping after interface configuration
+  ${ping_output}=    Run Cmd   ping 10.0.9.0
+  ${match}      ${packet_loss}=      Should Match Regexp     ${ping_output['result']['msg']}  (\\d+\\.\\d+)% packet loss
+  # Log to console  ${match}
+  Should Be Equal As Numbers   ${packet_loss}       0       msg="Packets lost percent not zero!!!"
 
 *** Keywords ***
 Add Switches

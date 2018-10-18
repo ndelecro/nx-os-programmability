@@ -1,5 +1,5 @@
 *** Settings ***
-Library	     CiscoNxosLibrary
+Library	          CiscoNxosLibrary
 
 Suite Setup  Add Switches
 
@@ -13,14 +13,25 @@ Check version
 Check version wrong
   Change To Switch    9372-1
   ${version}=  Run Cmd  show ver
-  Log   ${version}
   Should Be Equal   ${version['result']['body']['kickstart_ver_str']}   9.2(1)
 
 Check model type
   Change To Switch    n9kv-4
   ${mod}=  Run Cmd  show mod
-  Log   ${mod}
   Should Be Equal   ${mod['result']['body']['TABLE_modinfo']['ROW_modinfo']['model']}   N9K-9000v
+
+Ping
+  Change To Switch    9372-1
+  ${ping_output}=    Run Cmd   ping 10.0.9.0
+  ${match}      ${packet_loss}=      Should Match Regexp     ${ping_output['result']['msg']}  (\\d+\\.\\d+)% packet loss
+  Should Be Equal As Numbers   ${packet_loss}       0       msg="Packets lost percent not zero!!!"
+
+Ping wrong
+  Change To Switch    9372-1
+  ${ping_output}=    Run Cmd   ping 10.0.9.42
+  ${match}      ${packet_loss}=      Should Match Regexp     ${ping_output['result']['msg']}  (\\d+\\.\\d+)% packet loss
+  # Log to console  ${match}
+  Should Be Equal As Numbers   ${packet_loss}       0       msg="Packets lost percent not zero!!!"
 
 *** Keywords ***
 Add Switches
