@@ -6,19 +6,19 @@ Suite Setup  Add Switches
 *** Test Cases ***
 Check version
   Change To Switch    n9kv-3
-  ${version}=  Run Cmds  show ver
+  ${version}=  Run Cmd  show ver
   Log   ${version}
   Should Be Equal   ${version['result']['body']['kickstart_ver_str']}   9.2(1)
 
 Check version wrong
   Change To Switch    9372-1
-  ${version}=  Run Cmds  show ver
+  ${version}=  Run Cmd  show ver
   Log   ${version}
   Should Be Equal   ${version['result']['body']['kickstart_ver_str']}   9.2(1)
 
 Check model type
   Change To Switch    n9kv-4
-  ${mod}=  Run Cmds  show mod
+  ${mod}=  Run Cmd  show mod
   Log   ${mod}
   Should Be Equal   ${mod['result']['body']['TABLE_modinfo']['ROW_modinfo']['model']}   N9K-9000v
 

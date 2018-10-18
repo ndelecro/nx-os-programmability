@@ -15,11 +15,18 @@ class CiscoNxosLibrary(object):
             if item["host"] == host:
                 self.current_switch = item
 
-    def run_cmds(self, commands):
+    def run_cmd(self, command):
         resp = self.post_clis(self.current_switch["host"],
                               self.current_switch["user"],
                               self.current_switch["pwd"],
-                              [str(commands)])
+                              [str(command)])
+        return resp
+
+    def configure(self, commands):
+        resp = self.post_clis(self.current_switch["host"],
+                              self.current_switch["user"],
+                              self.current_switch["pwd"],
+                              commands)
         return resp
 
     def post_payload(self, switch_IP, switch_user, switch_password, payload):

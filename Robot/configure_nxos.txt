@@ -1,0 +1,16 @@
+*** Settings ***
+Library	     CiscoNxosLibrary
+
+Suite Setup  Add Switches
+
+*** Test Cases ***
+Add a VLAN
+  Change To Switch    9372-1
+  @{cmds}=    Create List    vlan 42    name vlan-42
+  Configure   ${cmds}
+
+*** Keywords ***
+Add Switches
+  Add Switch    host=9372-1    user=admin    pwd=cisco
+  Add Switch    host=n9kv-3    user=admin    pwd=cisco
+  Add Switch    host=n9kv-4    user=admin    pwd=cisco
