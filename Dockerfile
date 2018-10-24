@@ -21,6 +21,11 @@ RUN     pip install requests && \
 	mkdir /root/NX-API_CLI && \
 	svn checkout "https://github.com/ndelecro/nx-os-programmability/trunk/NX-API_CLI" /root/NX-API_CLI
 
+# Robot
+RUN	pip install robotframework && \
+	mkdir /root/Robot && \
+	svn checkout "https://github.com/ndelecro/nx-os-programmability/trunk/Robot" /root/Robot
+
 # YDK
 RUN	wget https://devhub.cisco.com/artifactory/debian-ydk/0.7.2/libydk_0.7.2-1_amd64.deb -P /tmp && \
 	gdebi --n /tmp/libydk_0.7.2-1_amd64.deb
