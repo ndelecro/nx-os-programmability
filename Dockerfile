@@ -26,6 +26,14 @@ RUN	pip install robotframework && \
 	mkdir /root/Robot && \
 	svn checkout "https://github.com/ndelecro/nx-os-programmability/trunk/Robot" /root/Robot
 
+# SaltStack
+RUN     pip install pyOpenSSL==16.2.0 && \
+        curl -L https://bootstrap.saltstack.com -o install_salt.sh && \
+        sh install_salt.sh -P -M && \
+        mkdir /srv/salt && \
+        svn checkout --depth files "https://github.com/ndelecro/nx-os-programmability/trunk/SaltStack" /srv/salt && \
+        svn checkout "https://github.com/ndelecro/nx-os-programmability/trunk/SaltStack/Config" /etc/salt
+
 # YDK
 RUN	wget https://devhub.cisco.com/artifactory/debian-ydk/0.7.2/libydk_0.7.2-1_amd64.deb -P /tmp && \
 	gdebi --n /tmp/libydk_0.7.2-1_amd64.deb
