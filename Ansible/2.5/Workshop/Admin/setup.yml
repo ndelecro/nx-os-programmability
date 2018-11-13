@@ -8,3 +8,4 @@
     - name: Setup workshop
       nxos_config:
         src: setup.j2
+        save_when: modified
