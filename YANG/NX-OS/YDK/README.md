@@ -1,3 +1,5 @@
+The switches need to run NX-OS 7.0(3)I7(4) or later.
+
 Edit the switch management IP or DNS and the credentials to match your device in the Python scripts:
 ```
 ncc = NetconfServiceProvider(address='MY_SWITCH',

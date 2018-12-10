@@ -35,14 +35,15 @@ RUN     pip install pyOpenSSL==16.2.0 && \
         svn checkout "https://github.com/ndelecro/nx-os-programmability/trunk/SaltStack/Config" /etc/salt
 
 # YDK
-RUN	wget https://devhub.cisco.com/artifactory/debian-ydk/0.7.2/libydk_0.7.2-1_amd64.deb -P /tmp && \
-	gdebi --n /tmp/libydk_0.7.2-1_amd64.deb
+RUN	wget https://devhub.cisco.com/artifactory/debian-ydk/0.7.3/libydk_0.7.3-1_amd64.deb -P /tmp && \
+	gdebi --n /tmp/libydk_0.7.3-1_amd64.deb && \
+	pip install ydk==0.7.3
 
 # YDK NX-OS
-# RUN	pip install ydk-models-cisco-nx-os==0.7.4 && \
-# 	mkdir -p /root/YANG/NX-OS/YDK && \
-# 	svn checkout "https://github.com/ndelecro/nx-os-programmability/trunk/YANG/NX-OS/YDK" /root/YANG/NX-OS/YDK && \
-# 	wget https://github.com/YangModels/yang/blob/master/vendor/cisco/nx/7.0-3-I7-3/Cisco-NX-OS-device.yang?raw=true -O /root/YANG/NX-OS/YDK/Cisco-NX-OS-device.yang
+RUN	pip install ydk-models-cisco-nx-os==0.7.4 && \
+	mkdir -p /root/YANG/NX-OS/YDK && \
+	svn checkout "https://github.com/ndelecro/nx-os-programmability/trunk/YANG/NX-OS/YDK" /root/YANG/NX-OS/YDK && \
+	wget https://github.com/YangModels/yang/blob/master/vendor/cisco/nx/7.0-3-I7-3/Cisco-NX-OS-device.yang?raw=true -O /root/YANG/NX-OS/YDK/Cisco-NX-OS-device.yang
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
