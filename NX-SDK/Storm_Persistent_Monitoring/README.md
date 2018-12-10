@@ -1,11 +1,11 @@
 Configure Storm Control on any required interfaces:
 ```
-93180-EX-1# conf
+switch# conf
 Enter configuration commands, one per line. End with CNTL/Z.
-93180-EX-1(config)# int e1/41
-93180-EX-1(config-if)# storm-control multicast level 1
-93180-EX-1(config-if)# storm-control broadcast level 1
-93180-EX-1(config-if)# storm-control unicast level 1
+switch(config)# int e1/41
+switch(config-if)# storm-control multicast level 1
+switch(config-if)# storm-control broadcast level 1
+switch(config-if)# storm-control unicast level 1
 ```
 
 Copy storm.py to the bootflash.
