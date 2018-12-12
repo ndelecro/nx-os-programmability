@@ -42,9 +42,24 @@ Service-name              Base App        Started(PID)      Version    RPM Packa
 switch#
 ```
 
-If storm traffic is persisting after the period of time configured in the app, the interface(s) will be shut down:
+If storm traffic is persisting after the period of time configured in the app (by default, 10 seconds), the interface(s) will be shut down:
 ```
 switch# 2018 Dec 10 16:49:08 switch %NXSDK-4-WARNING_MSG:   [21279]  [storm.py] Traffic storm persisting on Ethernet1/41 after 10 minute(s): suppression discard count current=160587834500, previous=156941358000.  Shutting down interface
 2018 Dec 10 16:49:09 switch %ETHPORT-5-IF_DOWN_CFG_CHANGE: Interface Ethernet1/41 is down(Config change)
 2018 Dec 10 16:49:09 switch %ETHPORT-5-IF_DOWN_ADMIN_DOWN: Interface Ethernet1/41 is down (Administratively down)
+```
+
+The interface(s) that the app has shut down are automatically brought back up after a longer period of time (by default, 1 minute):
+```
+switch(config)# 2018 Dec 12 08:16:21 switch %NXSDK-4-WARNING_MSG:   [12628]  [storm.py] Interface Ethernet1/41 has been shut for more than 60 seconds, unshutting
+2018 Dec 12 08:16:22 switch %ETHPORT-5-IF_ADMIN_UP: Interface Ethernet1/41 is admin up .
+```
+
+The shut and unshut timers can be configured as follows:
+```
+switch(config)# storm.py ?
+  shut-interval    Interval in seconds after which the interfaces on which storm traffic persists
+                   are shut down
+  unshut-interval  Interval in seconds after which the interfaces that got shut down by the app are
+                   brought back up
 ```
