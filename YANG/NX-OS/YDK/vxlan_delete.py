@@ -23,7 +23,6 @@ ncc = NetconfServiceProvider(address='93180-EX-1',
 s = Cisco_NX_OS_device.System()
 l = s.bd_items.bd_items.BDList()
 l.fabencap = 'vlan-123'
-# import pdb, sys; pdb.Pdb(stdout=sys.__stdout__).set_trace()
 l.yfilter = YFilter.delete
 s.bd_items.bd_items.bd_list.append(l)
 
