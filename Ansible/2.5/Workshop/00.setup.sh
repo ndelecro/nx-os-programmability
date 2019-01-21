@@ -7,7 +7,7 @@ fi
 
 id=$1
 
-for file in *.{yml,txt}; do
-    sed -i '' "s/STUDENT_ID/$id/" $file
+for file in *.{yml,txt,j2}; do
+    sed -i "s/STUDENT_ID/$id/" $file
     echo $file
 done
