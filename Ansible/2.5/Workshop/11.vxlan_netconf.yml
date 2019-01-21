@@ -7,4 +7,4 @@
     - name: VXLAN
       netconf_config:
         datastore: running
-        src: 14.vxlan_yang.txt
+        src: 11.vxlan_yang.txt

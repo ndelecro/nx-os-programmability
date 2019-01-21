@@ -7,12 +7,12 @@
     - name: Add L2VNI to Overlay
       nxos_vxlan_vtep_vni:
         interface: nve1
-        vni: FIXME_L2VNI
+        vni: 200STUDENT_ID
         multicast_group: 239.239.239.100
         suppress_arp: true
 
     - name: Add L2VNI to EVPN
       nxos_evpn_vni:
-        vni: FIXME_L2VNI
+        vni: 200STUDENT_ID
         route_distinguisher: auto
         route_target_both: auto

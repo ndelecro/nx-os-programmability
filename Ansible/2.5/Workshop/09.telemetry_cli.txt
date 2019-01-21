@@ -1,5 +1,5 @@
 telemetry
-  destination-group FIXME_MY_STUDENT_ID
+  destination-group STUDENT_ID
     ip address 1.1.1.10 port 80 protocol HTTP encoding JSON
     ip address 1.1.1.1 port 80 protocol HTTP encoding JSON
     ip address 1.1.1.2 port 80 protocol HTTP encoding JSON

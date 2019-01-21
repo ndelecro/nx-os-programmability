@@ -6,6 +6,6 @@
   tasks:
     - name: Create VLAN
       nxos_vlan:
-        vlan_id: FIXME_MY_STUDENT_ID
-        FIXME_parameter: FIXME_L2VNI
+        vlan_id: STUDENT_ID
+        mapped_vni: 200STUDENT_ID
         admin_state: up

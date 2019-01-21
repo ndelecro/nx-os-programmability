@@ -8,7 +8,7 @@
       nxos_static_route:
         prefix: "{{ item.prefix }}"
         next_hop: "{{ item.next_hop }}"
-        vrf: FIXME_MY_STUDENT_ID
+        vrf: STUDENT_ID
       loop:
         - { prefix: 1.1.1.1/32, next_hop: 192.168.0.1 }
         - { prefix: 2.2.2.2/32, next_hop: 192.168.0.1 }

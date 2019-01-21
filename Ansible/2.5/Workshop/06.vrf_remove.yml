@@ -6,5 +6,5 @@
   tasks:
     - name: Remove VRF
       nxos_vrf:
-        name: FIXME_MY_STUDENT_ID
+        name: STUDENT_ID
         state: absent
