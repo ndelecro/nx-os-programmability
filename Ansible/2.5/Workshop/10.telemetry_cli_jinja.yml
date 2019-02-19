@@ -8,4 +8,4 @@
       nxos_config:
         src: 10.telemetry_cli.j2
       vars:
-        student_id: STUDENT_ID
+        my_destination_group: STUDENT_ID

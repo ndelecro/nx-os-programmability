@@ -1,5 +1,5 @@
 telemetry
-  destination-group {{ STUDENT_ID }}
+  destination-group {{ my_destination_group }}
 {% for i in range(1, 11) %}
     ip address 1.1.1.{{ i }} port 80 protocol HTTP encoding JSON
 {% endfor %}
