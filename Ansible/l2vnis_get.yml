@@ -1,0 +1,14 @@
+---
+- name: Get all L2VNIs
+  hosts: nxos_vteps
+  gather_facts: no
+
+  tasks:
+    - name: Get all L2VNIs
+      nxos_command:
+        commands: show nve vni
+      register: l2vnis
+
+    - debug:
+        var: l2vnis.stdout_lines[0]
+
