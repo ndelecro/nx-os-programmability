@@ -10,9 +10,9 @@ RUN	apt-get -y update && \
 	pip install scp
 
 # Ansible
-RUN     pip install ansible==2.6.1 ncclient && \
+RUN     pip install ansible==2.7.8 ncclient && \
 	mkdir /root/Ansible && \
-	svn checkout "https://github.com/ndelecro/nx-os-programmability/trunk/Ansible/2.5" /root/Ansible && \
+	svn checkout "https://github.com/ndelecro/nx-os-programmability/trunk/Ansible" /root/Ansible && \
 	mkdir /etc/ansible && \
 	svn checkout "https://github.com/ndelecro/nx-os-programmability/trunk/Ansible/Config" /etc/ansible
 

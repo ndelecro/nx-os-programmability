@@ -1,10 +1,10 @@
 ---
-- name: Check for the presence of a given L2VNI
+- name: Check for the presence of L2VNI {{ l2vni }}
   hosts: nxos_vteps
   gather_facts: no
 
   tasks:
-    - name: Get L2VNI
+    - name: Get L2VNI {{ l2vni }}
       nxos_command:
         commands: show nve vni {{ l2vni }}
       register: output
@@ -18,4 +18,3 @@
           - output.stdout[0] != ""
         fail_msg: "L2VNI {{ l2vni }} not present"
         success_msg: "L2VNI {{ l2vni }} present"
-
