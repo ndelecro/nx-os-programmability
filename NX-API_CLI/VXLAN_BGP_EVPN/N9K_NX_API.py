@@ -13,12 +13,25 @@ def post_clis(switch_IP, switch_user, switch_password, clis):
     myheaders={'content-type':'application/json-rpc'}
     url = "http://%s/ins" % (switch_IP)
 
+    nxapi_id = 1
     for cli in clis:
         print cli
-        dict_entry = {"jsonrpc": "2.0","method": "cli","params": {"cmd": cli,"version": 1},"id": 1}
+        dict_entry = {
+            "jsonrpc": "2.0",
+            "method": "cli",
+            "params": {
+                "cmd": cli,
+                "version": 1
+            },
+            "id": nxapi_id,
+            "rollback": "rollback-on-error"
+        }
         payload.append(dict_entry)
+        nxapi_id += 1
 
-    requests.post(url, data = json.dumps(payload), headers = myheaders,
-                  auth = (switch_user, switch_password)).json()
+    print(json.dumps(payload, indent=4))
+    response = requests.post(url, data = json.dumps(payload), headers = myheaders,
+                             auth = (switch_user, switch_password)).json()
+    print(json.dumps(response, indent=4))
     print
 
