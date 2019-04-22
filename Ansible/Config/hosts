@@ -1,6 +1,10 @@
 [nxos_vteps]
 # FIXME: add your hosts here
 
+[vpc]
+93180-EX-1 pkl_src=10.60.0.109 pkl_dest=10.60.0.110
+93180-EX-2 pkl_src=10.60.0.110 pkl_dest=10.60.0.109
+
 [nxos_vteps_cli]
 # 93180-EX-1
 

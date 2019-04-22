@@ -1,0 +1,19 @@
+---
+- name: Copy file via pull model
+  hosts: install_nxos_cli
+  gather_facts: no
+
+  tasks:
+    - name: Copy NX-OS image via pull model
+      nxos_file_copy:
+        file_pull: True
+        file_pull_timeout: 1200
+        remote_file: /home/file
+        remote_scp_server: my_server
+        remote_scp_server_user: my_user
+        remote_scp_server_password: my_password
+      register: result
+
+    - debug:
+        msg: "{{ item.key }} {{ item.value }}"
+      with_dict: "{{ result }}"

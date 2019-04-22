@@ -1,0 +1,40 @@
+me: Configure vPC to the host
+  hosts: vpc
+  gather_facts: no
+
+  tasks:
+    - name: Add host PO
+      nxos_interface:
+        name: port-channel41
+        mode: layer2
+
+    - name: Configure host PO as trunk
+      nxos_l2_interface:
+        name: port-channel41
+        mode: trunk
+        trunk_allowed_vlans: 2200
+
+    - name: Configure host PO as vPC
+      nxos_vpc_interface:
+        portchannel: 41
+        vpc: 41
+
+    - name: Configure and unshut host vPC interface
+      nxos_interface:
+        name: Ethernet1/41
+        mode: layer2
+        admin_state: up
+
+    - name: Configure host vPC interface as trunk
+      nxos_l2_interface:
+        name: Ethernet1/41
+        mode: trunk
+        trunk_allowed_vlans: 2200
+
+    - name: Add host interface to vPC PO
+      nxos_linkagg:
+        group: 41
+        mode: active
+        members:
+          - Ethernet1/41
+
