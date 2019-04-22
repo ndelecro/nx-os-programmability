@@ -1,0 +1,18 @@
+---
+- name: Unconfigure vPC to the host
+  hosts: vpc
+  gather_facts: no
+  
+  tasks:
+    - name: Remove host PO
+      nxos_interface:
+        name: "port-channel{{ item.id }}"
+        state: absent
+      with_items: "{{ host_vpcs }}"
+
+    - name: Unconfigure and shut host vPC interface
+      nxos_interface:
+        name: "{{ item.interface }}"
+        mode: layer3
+        admin_state: down
+      with_items: "{{ host_vpcs }}"

@@ -13,46 +13,39 @@
 
     - name: Add vPC domain and peer-keepalive
       nxos_vpc:
-        domain: 10
+        domain: "{{ vpc_domain }}"
         peer_gw: yes
-        pkl_src: "{{ hostvars[inventory_hostname]['pkl_src'] }}"
-        pkl_dest: "{{ hostvars[inventory_hostname]['pkl_dest'] }}"
+        pkl_src: "{{ pkl_src }}"
+        pkl_dest: "{{ pkl_dest }}"
 
     - name: Add peer-link port-channel
       nxos_interface:
-        name: port-channel10
+        name: "port-channel{{ peer_link_po }}"
         mode: layer2
 
     - name: Configure peer-link PO as trunk
       nxos_l2_interface:
-        name: port-channel10
+        name: "port-channel{{ peer_link_po }}"
         mode: trunk
 
     - name: Configure peer-link PO as vPC peer-link
       nxos_vpc_interface:
-        portchannel: 10
+        portchannel: "{{ peer_link_po }}"
         peer_link: true
 
     - name: Configure and unshut peer-link interfaces
       nxos_interface:
-        aggregate:
-          - { name: Ethernet1/19 }
-          - { name: Ethernet1/20 }
+        aggregate: "{{ peer_link_interfaces }}"
         mode: layer2
         admin_state: up
 
     - name: Configure peer-link interfaces as trunk
       nxos_l2_interface:
-        aggregate:
-          - { name: Ethernet1/19 }
-          - { name: Ethernet1/20 }
+        aggregate: "{{ peer_link_interfaces }}"
         mode: trunk
 
     - name: Add peer-link interfaces as member of the peer-link PO
       nxos_linkagg:
-        group: 10
+        group: "{{ peer_link_po }}"
         mode: active
-        members:
-          - Ethernet1/19
-          - Ethernet1/20
-
+        members: "{{ peer_link_members }}"

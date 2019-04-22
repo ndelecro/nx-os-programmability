@@ -1,0 +1,21 @@
+---
+- name: Unconfigure vPC
+  hosts: vpc
+  gather_facts: no
+  
+  tasks:
+    - name: Remove peer-link port-channel
+      nxos_interface:
+        name: "port-channel{{ peer_link_po }}"
+        state: absent
+
+    - name: Unconfigure and shut peer-link interfaces
+      nxos_interface:
+        aggregate: "{{ peer_link_interfaces }}"
+        mode: layer3
+        admin_state: down
+        
+    - name: Remove vPC domain
+      nxos_vpc:
+        domain: "{{ vpc_domain }}"
+        state: absent

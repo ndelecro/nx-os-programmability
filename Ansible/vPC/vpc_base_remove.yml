@@ -1,0 +1,23 @@
+---
+- name: Unconfigure vPC
+  hosts: vpc
+  gather_facts: no
+  
+  tasks:
+    - name: Remove peer-link port-channel
+      nxos_interface:
+        name: port-channel10
+        state: absent
+
+    - name: Unconfigure and shut peer-link interfaces
+      nxos_interface:
+        aggregate:
+          - { name: Ethernet1/19 }
+          - { name: Ethernet1/20 }
+        mode: layer3
+        admin_state: down
+
+    - name: Remove vPC domain
+      nxos_vpc:
+        domain: 10
+        state: absent

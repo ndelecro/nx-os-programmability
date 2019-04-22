@@ -1,0 +1,16 @@
+---
+- name: Configure vPC to the host
+  hosts: vpc
+  gather_facts: no
+  
+  tasks:
+    - name: Remove host PO
+      nxos_interface:
+        name: port-channel41
+        state: absent
+
+    - name: Unconfigure and shut host vPC interface
+      nxos_interface:
+        name: Ethernet1/41
+        mode: layer3
+        admin_state: down

@@ -4,3 +4,15 @@ ansible_connection: network_cli
 ansible_user: admin
 ansible_ssh_pass: cisco
 
+vpc_domain: 10
+peer_link_po: 10
+peer_link_interfaces:
+  - { name: Ethernet1/19 }
+  - { name: Ethernet1/20 }
+peer_link_members:
+  - Ethernet1/19
+  - Ethernet1/20
+
+host_vpcs:
+  - { id: 41, vlans: 2200-2201, interface: Ethernet1/41 }
+  - { id: 42, vlans: 2200, interface: Ethernet1/42 }

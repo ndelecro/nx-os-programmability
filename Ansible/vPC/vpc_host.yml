@@ -1,4 +1,5 @@
-me: Configure vPC to the host
+---
+- name: Configure vPC to the host
   hosts: vpc
   gather_facts: no
 
@@ -37,4 +38,3 @@ me: Configure vPC to the host
         mode: active
         members:
           - Ethernet1/41
-

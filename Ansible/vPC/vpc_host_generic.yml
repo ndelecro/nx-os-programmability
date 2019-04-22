@@ -1,0 +1,46 @@
+---
+- name: Configure vPC to the host
+  hosts: vpc
+  gather_facts: no
+  
+  tasks:
+    - name: Add host PO
+      nxos_interface:
+        name: "port-channel{{ item.id }}"
+        mode: layer2
+      with_items: "{{ host_vpcs }}"
+
+    - name: Configure host PO as trunk, and add VLANs
+      nxos_l2_interface:
+        name: "port-channel{{ item.id }}"
+        mode: trunk
+        trunk_allowed_vlans: "{{ item.vlans }}"
+      with_items: "{{ host_vpcs }}"
+
+    - name: Configure host PO as vPC
+      nxos_vpc_interface:
+        portchannel: "{{ item.id }}"
+        vpc: "{{ item.id }}"
+      with_items: "{{ host_vpcs }}"
+    
+    - name: Configure and unshut host vPC interface
+      nxos_interface:
+        name: "{{ item.interface }}"
+        mode: layer2
+        admin_state: up
+      with_items: "{{ host_vpcs }}"
+        
+    - name: Configure host vPC interface as trunk
+      nxos_l2_interface:
+        name: "{{ item.interface }}"
+        mode: trunk
+        trunk_allowed_vlans: "{{ item.vlans }}"
+      with_items: "{{ host_vpcs }}"
+
+    - name: Add host interface to vPC PO
+      nxos_linkagg:
+        group: "{{ item.id }}"
+        mode: active
+        members:
+          - "{{ item.interface }}"
+      with_items: "{{ host_vpcs }}"
