@@ -1,0 +1,5 @@
+---
+l2vnis:
+  - { id: 300STUDENT_ID, mcast_group: 239.239.239.103 }
+  - { id: 301STUDENT_ID, mcast_group: 239.239.239.103 }
+

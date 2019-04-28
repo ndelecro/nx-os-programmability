@@ -1,0 +1,21 @@
+---
+- name: Create L2VNI
+  hosts: nxos_vteps
+  gather_facts: no
+
+  tasks:
+    - name: Add L2VNI to Overlay
+      nxos_vxlan_vtep_vni:
+        interface: nve1
+        vni: "{{ item.id }}"
+        multicast_group: "{{ item.mcast_group }}"
+        suppress_arp: true
+      with_items: "{{ l2vnis }}"
+
+    - name: Add L2VNI to EVPN
+      nxos_evpn_vni:
+        vni: "{{ item.id }}"
+        route_distinguisher: auto
+        route_target_both: auto
+      loop: "{{ l2vnis }}"
+
