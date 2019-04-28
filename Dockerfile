@@ -46,8 +46,8 @@ RUN	pip install ydk-models-cisco-nx-os==0.7.4 && \
 	wget https://github.com/YangModels/yang/blob/master/vendor/cisco/nx/7.0-3-I7-3/Cisco-NX-OS-device.yang?raw=true -O /root/YANG/NX-OS/YDK/Cisco-NX-OS-device.yang
 
 # Misc. configuration
-RUN	mkdir /root/.emacs.d/lisp &&
-        wget https://raw.githubusercontent.com/yoshiki/yaml-mode/master/yaml-mode.el /root/.emacs.d/lisp &&
+RUN	mkdir /root/.emacs.d/lisp && \
+        wget https://raw.githubusercontent.com/yoshiki/yaml-mode/master/yaml-mode.el /root/.emacs.d/lisp && \
         wget https://raw.githubusercontent.com/ndelecro/config/master/dotemacs -O /root/.emacs
 
 # Clean up APT when done.
