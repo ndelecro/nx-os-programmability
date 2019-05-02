@@ -6,4 +6,4 @@
   tasks:
     - name: Configure destinations
       nxos_config:
-        src: 09.telemetry_cli.txt
+        src: 10.telemetry_cli.txt

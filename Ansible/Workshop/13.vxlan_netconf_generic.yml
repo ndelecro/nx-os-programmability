@@ -6,8 +6,8 @@
   tasks:
     - name: Generate the YANG payload from the template
       template:
-        src: 12.vxlan_yang.j2
-        dest: 12.vxlan_yang_payload.txt
+        src: 13.vxlan_yang.j2
+        dest: 13.vxlan_yang_payload.xml
       vars:
         vlan_id: STUDENT_ID
         vxlan_id: 200STUDENT_ID
@@ -16,4 +16,4 @@
     - name: Send the YANG payload to the switch via NETCONF
       netconf_config:
         datastore: running
-        src: 12.vxlan_yang_payload.txt
+        content: "{{ lookup('file', './13.vxlan_yang_payload.xml') }}"

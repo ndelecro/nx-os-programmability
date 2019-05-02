@@ -6,6 +6,6 @@
   tasks:
     - name: Configure destinations
       nxos_config:
-        src: 10.telemetry_cli.j2
+        src: 11.telemetry_cli.j2
       vars:
         my_destination_group: STUDENT_ID

@@ -7,4 +7,4 @@
     - name: VXLAN
       netconf_config:
         datastore: running
-        src: 11.vxlan_yang.txt
+        content: "{{ lookup('file', './12.vxlan_yang.xml') }}"

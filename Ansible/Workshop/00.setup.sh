@@ -13,3 +13,4 @@ for file in *.{yml,txt,j2}; do
 done
 
 sed -i "s/STUDENT_ID/$id/" /etc/ansible/host_vars/n9kv-{1,2}
+sed -i "s/STUDENT_ID/$id/" /etc/ansible/group_vars/nxos_vteps
