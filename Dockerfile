@@ -47,8 +47,8 @@ RUN	pip install ydk-models-cisco-nx-os==0.7.4 && \
 
 # Misc. configuration
 RUN	mkdir -p /root/.emacs.d/lisp && \
-        wget https://raw.githubusercontent.com/ndelecro/config/master/yaml-mode.el -P /root/.emacs.d/lisp && \
-        wget https://raw.githubusercontent.com/ndelecro/config/master/dotemacs -O /root/.emacs
+	wget https://raw.githubusercontent.com/ndelecro/config/master/yaml-mode.el -P /root/.emacs.d/lisp && \
+	wget https://raw.githubusercontent.com/ndelecro/config/master/dotemacs -O /root/.emacs
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
