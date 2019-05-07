@@ -1,0 +1,10 @@
+---
+- name: Create VLANs
+  hosts: nxos_vteps
+  gather_facts: no
+
+  tasks:
+    - name: Create VLANs
+      nxos_config:
+        src: vlans.conf
+

@@ -6,7 +6,7 @@ CMD ["/sbin/my_init"]
 
 # Dependencies
 RUN	apt-get -y update && \
-	apt-get -y install python-pip gdebi-core python3-dev python-dev libtool-bin wget emacs iputils-ping subversion pexpect && \
+	apt-get -y install python-pip gdebi-core python3-dev python-dev libtool-bin wget emacs iputils-ping subversion python-pexpect && \
 	pip install scp
 
 # Ansible

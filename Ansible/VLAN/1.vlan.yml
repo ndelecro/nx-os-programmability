@@ -1,0 +1,11 @@
+---
+- name: Create VLAN
+  hosts: nxos_vteps
+  gather_facts: no
+
+  tasks:
+    - name: Create VLAN 10
+      nxos_config:
+        lines:
+          - vlan 10
+

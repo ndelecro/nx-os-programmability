@@ -1,0 +1,16 @@
+---
+- name: Create VLANs
+  hosts: nxos_vteps
+  gather_facts: no
+
+  tasks:
+    - name: Include VLAN list
+      include_vars:
+        file: vlans.yml
+
+    - name: Create VLANs
+      nxos_vlan:
+        vlan_id: "{{ item.id }}"
+        name: "{{ item.name }}"
+      loop: "{{ vlans }}"
+

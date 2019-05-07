@@ -1,0 +1,4 @@
+vlans:
+  - { id: 15, name: frontend, owner: john }
+  - { id: 16, name: backend, owner: chuck }
+
