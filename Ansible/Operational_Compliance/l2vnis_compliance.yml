@@ -1,0 +1,12 @@
+---
+- name: L2VNIs compliance
+  hosts: 93180-EX-1
+  gather_facts: no
+
+  tasks:
+    - include_vars:
+        file: l2vnis.yml
+
+    - include_tasks: l2vnis_compliance_task.yml
+      loop: "{{ l2vnis }}"
+
