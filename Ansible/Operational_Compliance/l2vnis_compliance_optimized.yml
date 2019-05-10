@@ -1,0 +1,36 @@
+---
+- name: L2VNIs compliance optimized
+  hosts: nxos_vteps
+  gather_facts: no
+
+  tasks:
+    - name: Include list of expected L2VNIs
+      include_vars:
+        file: l2vnis_var.yml
+
+    - name: Get all L2VNIs
+      nxos_command:
+        commands: show nve vni | json
+      register: show_vni_output
+
+    - debug:
+        msg: "{{ show_vni_output }}"
+        verbosity: 1
+
+    - set_fact: switch_vnis_list="{{ show_vni_output.stdout[0]['TABLE_nve_vni']['ROW_nve_vni'] }}"
+
+    - debug:
+        msg: "switch_vnis_list {{ switch_vnis_list }}"
+        verbosity: 1
+
+    - debug:
+        msg: "VNI = {{ item['vni'] }}"
+        verbosity: 1
+      with_items: "{{ switch_vnis_list }}"
+
+    - name: L2VNI existence check
+      debug:
+        msg: "VNI {{ item }} is missing"
+      when: switch_vnis_list | selectattr('vni', 'equalto', item) | list | count == 0
+      loop: "{{ l2vnis_expected }}"
+
