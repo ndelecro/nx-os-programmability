@@ -18,23 +18,17 @@ import nx_sdk_py
 cliP                            = 0
 sdk                             = 0
 event_hdlr                      = True
-previous_intf_pdus_rcvd_dict    = {}
-# in seconds
-check_interval                  = 15
-# in packets
-storm_limit                     = 3
 mycmd                           = 0
-port_threshold = 100
+port_threshold                  = 100
 
 ### 
 # Function to get the "show int" output and compute the percentage
 # TX & RX Bandwidth utilization data.
 ###
-def print_port_bw (result):
+def print_port_bw(result, print_syslog, hit_threshold):
     global sdk, port_threshold
 
     t = sdk.getTracer()
-
     (interface, eth_bw, tx_rate, rx_rate, tx_bits, rx_bits) = ("", 0, 0, 0, 0, 0)
 
     ### Get all the necessary data to compute port BW utilization percentage
@@ -61,13 +55,29 @@ def print_port_bw (result):
     rx_percentage = float(-1) # N/A
 
     if eth_bw: 
-       # For test purposes
+       ### For Test purposes
        tx_bits = random.randint(eth_bw, eth_bw * 1000) 
 
        tx_percentage = float((tx_bits * 100)/(eth_bw * 1000)) 
-       rx_percentage = float((rx_bits * 100)/(eth_bw * 1000))     
-     
-    print_str = '{0:15} {1:20} {2:18.2f} {3:18.2f}'.format(interface, bw_str, tx_percentage, rx_percentage)      
+       rx_percentage = float((rx_bits * 100)/(eth_bw * 1000))
+      
+    display_op = False
+    if not hit_threshold:
+       display_op = True
+
+    ### If the port has exceeded the threshold then log a syslog.
+    if port_threshold <= tx_percentage or port_threshold <= rx_percentage:
+       if hit_threshold:
+          display_op = True
+       if t and print_syslog:
+          t.event("Port: %s (tx: %.2f, rx: %.2f) higher than threshold %d" % \
+            (interface, tx_percentage, rx_percentage, port_threshold))
+       
+    print_str = ""
+    if display_op:        
+        ### Return the print string for show output.
+        print_str = '{0:15} {1:20} {2:18.2f} {3:18.2f}'.format(interface, \
+            bw_str, tx_percentage, rx_percentage)      
     return print_str
 
 class pyCmdHandler(nx_sdk_py.NxCmdHandler):
@@ -102,12 +112,12 @@ class pyCmdHandler(nx_sdk_py.NxCmdHandler):
                  
                  # Handle nested JSON output for all ports
                  if type(key) == dict:
-                    display_op = print_port_bw(key)
+                    display_op = print_port_bw(key, False, clicmd.isKeywordSet("hit-threshold"))
                     if display_op:
                        clicmd.printConsole("%s\n" % display_op)
                  else:
                     # Handle JSON output for one port.
-                    display_op = print_port_bw(json_res)
+                    display_op = print_port_bw(json_res, False, False)
                     if display_op:
                        clicmd.printConsole("%s\n" % display_op)
                     break
@@ -129,12 +139,13 @@ def setup_show_cmd():
     global cliP, sdk, mycmd
 
     cliP = sdk.getCliParser()
-    nxcmd = cliP.newShowCmd("show_port_bw_util_cmd", "port bw utilization [<port>]")
+    nxcmd = cliP.newShowCmd("show_port_bw_util_cmd", "port bw utilization [<port> | hit-threshold]")
     nxcmd.updateKeyword("port", "Port Information")
     nxcmd.updateKeyword("bw", "Port Bandwidth Information")
     nxcmd.updateKeyword("utilization", "Port BW utilization in (%)")
     nxcmd.updateParam("<port>", "Optional Filter Port Ex) Ethernet1/1", \
         nx_sdk_py.P_INTERFACE)
+    nxcmd.updateKeyword("hit-threshold", "Display all ports exceeded the threshold")
 
 def setup_config_cmd():
     global cliP, sdk, mycmd
@@ -172,6 +183,19 @@ def setup_clis():
     # Add custom commands to NX CLI Parse Tree
     cliP.addToParseTree()    
 
+def timerThread(name, val):
+    global cliP, sdk
+
+    while True:
+        ### Get show int output in JSON format and get the required fields
+        result = cliP.execShowCmd("show int", nx_sdk_py.R_JSON)
+        if result:
+           json_res = json.loads(result)["TABLE_interface"]["ROW_interface"]
+           for key in json_res:
+               if type(key) == dict:
+                    print_port_bw(key, True, False)
+        time.sleep(10)
+
 # Perform the event handling loop in a dedicated Python thread.
 # All SDK related activities happen here, while the main thread
 # may continue to do other work.  The call to startEventLoop will
@@ -182,8 +206,6 @@ def evtThread(name,val):
     sdk = nx_sdk_py.NxSdk.getSdkInst(len(sys.argv), sys.argv)
     if not sdk:
         return
-
-    sdk.setAppDesc('CLUS')
 
     # FIXME1: uncomment the following lines
     t = sdk.getTracer()
@@ -201,10 +223,15 @@ def evtThread(name,val):
     # [Required] Needed for graceful exit.
     nx_sdk_py.NxSdk.__swig_destroy__(sdk)
 
+# Create a timer thread
+timer_thread = threading.Thread(target=timerThread, args=("timerThread",0))
+timer_thread.daemon = True
+
 # Create an event thread to register with NxSDK, CLI Parser, Tracer
 # and Start Event loop to keep the application running.
 # NOTE: Doesnt need a special Event Thread can be done on Main too.
 evt_thread = threading.Thread(target=evtThread, args=("evtThread",0))
 
 evt_thread.start()
+timer_thread.start()
 evt_thread.join()
