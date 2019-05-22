@@ -21,17 +21,13 @@ event_hdlr                      = True
 mycmd                           = 0
 port_threshold                  = 100
 
-### 
-# Function to get the "show int" output and compute the percentage
-# TX & RX Bandwidth utilization data.
-###
 def print_port_bw(result, print_syslog, hit_threshold):
     global sdk, port_threshold
 
     t = sdk.getTracer()
     (interface, eth_bw, tx_rate, rx_rate, tx_bits, rx_bits) = ("", 0, 0, 0, 0, 0)
 
-    ### Get all the necessary data to compute port BW utilization percentage
+    # Get all the necessary data to compute port BW utilization percentage
     for key in result:
         key_ascii = str(key.encode('ascii','ignore'))
         value_ascii = str(result[key].encode('ascii','ignore'))
@@ -50,12 +46,12 @@ def print_port_bw(result, print_syslog, hit_threshold):
 
     bw_str = "%d Gbps (%d/%d)" % (eth_bw/1000000, rx_rate, tx_rate)
 
-    ### Compute the TX & RX port BW utilization.
+    # Compute the TX & RX port BW utilization.
     tx_percentage = float(-1) # N/A
     rx_percentage = float(-1) # N/A
 
     if eth_bw: 
-       ### For Test purposes
+       # For Test purposes
        tx_bits = random.randint(eth_bw, eth_bw * 1000) 
 
        tx_percentage = float((tx_bits * 100)/(eth_bw * 1000)) 
@@ -65,7 +61,7 @@ def print_port_bw(result, print_syslog, hit_threshold):
     if not hit_threshold:
        display_op = True
 
-    ### If the port has exceeded the threshold then log a syslog.
+    # If the port has exceeded the threshold then log a syslog.
     if port_threshold <= tx_percentage or port_threshold <= rx_percentage:
        if hit_threshold:
           display_op = True
@@ -75,7 +71,7 @@ def print_port_bw(result, print_syslog, hit_threshold):
        
     print_str = ""
     if display_op:        
-        ### Return the print string for show output.
+        # Return the print string for show output.
         print_str = '{0:15} {1:20} {2:18.2f} {3:18.2f}'.format(interface, \
             bw_str, tx_percentage, rx_percentage)      
     return print_str
@@ -86,7 +82,7 @@ class pyCmdHandler(nx_sdk_py.NxCmdHandler):
 
         if "show_port_bw_util_cmd" in clicmd.getCmdName():
            
-             ### Get the port value if set
+             # Get the port value if set
              port = nx_sdk_py.void_to_string(clicmd.getParamValue("<port>"))
              if port:
                 result = cliP.execShowCmd("show int %s" % str(port), \
@@ -94,7 +90,7 @@ class pyCmdHandler(nx_sdk_py.NxCmdHandler):
              else:
                 result = cliP.execShowCmd("show int", nx_sdk_py.R_JSON)
 
-             ### Print header string for the show output
+             # Print header string for the show output
              print_str = 'Port BW Threshold limit: %d\n\n' % port_threshold
              print_str += '{0:15} {1:20} {2:18} {3:18}'.format("Interface", \
                 "Bw (Rx/Tx Sec Rate)", "Tx_BW percentage", "RX_BW percentage")
@@ -102,11 +98,11 @@ class pyCmdHandler(nx_sdk_py.NxCmdHandler):
              clicmd.printConsole("--------------- -------------------- " + \
                 "------------------ ------------------\n") 
 
-             ### Nothing to display
+             # Nothing to display
              if not result:
                 return True
 
-             ### Parse the JSON output
+             # Parse the JSON output
              json_res = json.loads(result)["TABLE_interface"]["ROW_interface"]
              for key in json_res:
                  
@@ -123,13 +119,13 @@ class pyCmdHandler(nx_sdk_py.NxCmdHandler):
                     break
 
         elif "port_bw_threshold_cmd" in clicmd.getCmdName():
-             ### Action for port_bw_threshold_cmd
+             # Action for port_bw_threshold_cmd
 
-             ### Handle no command. Reset to default 
+             # Handle no command. Reset to default 
              if "no" in clicmd.getCmdLineStr():
                 port_threshold = 100;
              else:
-                ### Get the threshold value.
+                # Get the threshold value.
                 int_p = nx_sdk_py.void_to_int(clicmd.getParamValue("<threshold>"))
                 port_threshold = int(nx_sdk_py.intp_value(int_p))
 
@@ -187,13 +183,15 @@ def timerThread(name, val):
     global cliP, sdk
 
     while True:
-        ### Get show int output in JSON format and get the required fields
+        # Get show int output in JSON format and get the required fields
         result = cliP.execShowCmd("show int", nx_sdk_py.R_JSON)
         if result:
            json_res = json.loads(result)["TABLE_interface"]["ROW_interface"]
            for key in json_res:
                if type(key) == dict:
-                    print_port_bw(key, True, False)
+                    # FIXME4: remove the pass statement, and uncomment print_port_bw
+                    pass
+                    # print_port_bw(key, True, False)
         time.sleep(10)
 
 # Perform the event handling loop in a dedicated Python thread.
