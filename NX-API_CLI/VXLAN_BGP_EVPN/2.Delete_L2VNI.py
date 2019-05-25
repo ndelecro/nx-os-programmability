@@ -1,11 +1,9 @@
 #! /usr/bin/python
 
 import requests, json, sys
-from N9K_NX_API import *
+from nxapi import *
 
-f = open('credentials', 'r')
-switch_user = f.readline().rstrip()
-switch_password = f.readline().rstrip()
+switch_user = "admin"
 vteps_file = "vteps"
 vlan_arg = sys.argv[1]
 l2vni_arg = sys.argv[2]
@@ -29,6 +27,8 @@ def reset_access_port(access_port):
     clis.append("  switchport access vlan 1")
 
 def main():
+    get_switch_password()
+
     reset_access_port(access_port_arg)
     remove_l2vni_from_evpn(l2vni_arg)
     remove_l2vni_from_nve(l2vni_arg)
@@ -37,7 +37,7 @@ def main():
     vteps = [line.rstrip('\n') for line in open(vteps_file)]
     for vtep in vteps:
         print("****** VTEP %s ******" % (vtep))
-        post_clis(vtep, switch_user, switch_password, clis)
+        post_clis(vtep, switch_user, clis)
 
 if __name__ == "__main__":
     main()
