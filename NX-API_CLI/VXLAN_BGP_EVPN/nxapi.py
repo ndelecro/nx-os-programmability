@@ -42,4 +42,5 @@ def post_clis(switch_IP, switch_user, clis, rollback = False):
                              verify = False).json()
     print(json.dumps(response, indent=4))
     print
+    return response
 

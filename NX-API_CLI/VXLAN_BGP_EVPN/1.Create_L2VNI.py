@@ -33,6 +33,13 @@ def set_vlan_on_access_port(vlan, access_port):
     clis.append("int %s" % access_port)
     clis.append("  switchport access vlan %s" % vlan)
 
+def check_vlan(switch, user, vlan):
+    resp = post_clis(switch, user, ["show vlan id %s" % vlan])
+    if resp["result"]["body"]["TABLE_vlanbriefid"]["ROW_vlanbriefid"] \
+       ["vlanshowbr-vlanstate"] != "active":
+        print("ERROR: VLAN %s validation failed on switch %s" % \
+              (vlan, switch))
+
 def main():
     get_switch_password()
 
@@ -45,6 +52,7 @@ def main():
     for vtep in vteps:
         print("****** VTEP %s ******" % (vtep))
         post_clis(vtep, switch_user, clis)
+        check_vlan(vtep, switch_user, vlan_arg)
 
 if __name__ == "__main__":
     main()
