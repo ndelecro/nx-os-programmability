@@ -1,17 +1,20 @@
 int nve1
-{% for i in range(20010, 20091) %}
+{% for i in range(20010, 20043) %}
+  no member vni {{ i }}
+{% endfor %}
+{% for i in range(30010, 30043) %}
+  no member vni {{ i }}
+{% endfor %}
+{% for i in range(31010, 31043) %}
   no member vni {{ i }}
 {% endfor %}
 
 no evpn
 
-no vlan 10-90
+no vlan 10-42
 
-# {% for i in range(10, 91) %}
-# no username student{{ i }}
-# {% endfor %}
-
-{% for i in range(10, 91) %}
+{% for i in range(10, 43) %}
+vrf context {{ i }}
 no vrf context {{ i }}
 {% endfor %}
 

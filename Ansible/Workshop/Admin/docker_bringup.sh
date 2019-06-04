@@ -7,7 +7,7 @@ fi
 
 action=$1
 
-for id in {10..30}; do
+for id in {10..42}; do
     container=student$id
     echo $container
     if [ "$action" = "create" ]; then
@@ -22,4 +22,3 @@ for id in {10..30}; do
 	docker rm $container
     fi
 done
-

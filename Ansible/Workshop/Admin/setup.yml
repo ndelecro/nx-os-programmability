@@ -1,6 +1,6 @@
 ---
 - name: Setup workshop
-  hosts: workshop_admin
+  hosts: nxos_vteps
   gather_facts: no
   strategy: free
 
