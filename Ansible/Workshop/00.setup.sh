@@ -13,7 +13,7 @@ if ! [[ $id =~ $re ]] ; then
     exit 1
 fi
 
-for file in ~/Ansible/Workshop/*.{yml,txt,j2}; do
+for file in ~/Ansible/Workshop/*.{yml,txt,j2,xml}; do
     sed -i "s/STUDENT_ID/$id/" $file
     echo $file
 done
