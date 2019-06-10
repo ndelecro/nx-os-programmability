@@ -1,0 +1,12 @@
+# Don't forget to pass --diff to ansible-playbook
+
+---
+- name: Compare config
+  hosts: nxos_vteps
+  gather_facts: no
+
+  tasks:
+    - name: Compare config
+      nxos_config:
+        diff_against: intended
+        intended_config: "{{ lookup('file', 'master.cfg') }}"
