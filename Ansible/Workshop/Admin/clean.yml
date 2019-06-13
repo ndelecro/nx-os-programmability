@@ -8,3 +8,4 @@
     - name: Clean workshop
       nxos_config:
         src: clean.j2
+        save_when: modified
