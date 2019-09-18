@@ -1,0 +1,50 @@
+---
+- name: NX-OS Aggregation
+  hosts: nxos_f5_agg
+  gather_facts: no
+
+  tasks:
+    - name: Features
+      nxos_feature:
+        feature: "{{ item }}"
+        state: enabled
+      with_items:
+        - interface-vlan
+        - ospf
+        - hsrp
+
+    - name: VLAN
+      nxos_vlan:
+        vlan_id: "{{ vlan_id }}"
+        name: "{{ vlan_name }}"
+
+    - name: SVI
+      nxos_interface:
+        name: "vlan{{ vlan_id }}"
+        state: present
+
+    - name: Additional SVI config
+      nxos_config:
+        lines:
+          - no ip redirects
+          - "ip address {{ svi_ip }}"
+          - ip router ospf 1 area 0
+        parents: "interface vlan{{ vlan_id }}"
+
+    - name: HRSP SVI
+      nxos_config:
+        lines:
+          - "ip {{ hsrp_ip }}"
+        parents: ["interface vlan{{ vlan_id }}", "hsrp {{ hsrp_group }}"]
+
+    - name: Static route
+      nxos_static_route:
+        prefix: "{{ static_route_prefix }}"
+        next_hop: "{{ static_route_next_hop }}"
+        tag: 999
+
+    - name: Route-map static to OSPF
+      nxos_config:
+        lines:
+          - match tag 99
+        parents: "route-map static-to-ospf permit 10"

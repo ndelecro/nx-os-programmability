@@ -1,0 +1,11 @@
+[nxos_f5:children]
+nxos_f5_access
+nxos_f5_agg
+
+[nxos_f5_access]
+n9kv-1
+n9kv-2
+
+[nxos_f5_agg]
+n9kv-3
+n9kv-4

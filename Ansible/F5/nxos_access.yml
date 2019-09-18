@@ -1,0 +1,49 @@
+---
+- name: NX-OS Access
+  hosts: nxos_f5_access
+  gather_facts: no
+
+  tasks:
+    - name: Features
+      nxos_feature:
+        feature: "{{ item }}"
+        state: enabled
+      with_items:
+        - vpc
+
+    - name: VLAN
+      nxos_vlan:
+        vlan_id: "{{ vlan_id }}"
+        name: "{{ vlan_name }}"
+
+    - name: Port-channel
+      nxos_interface:
+        name: "port-channel{{ port_channel_id }}"
+        state: present
+
+    - name: Port-Channel config
+      nxos_config:
+        lines:
+          - switchport
+          - switchport mode trunk
+          - "switchport trunk allowed vlan {{ vlan_id }}"
+          - spanning-tree port type edge trunk
+          - spanning-tree bpduguard enable
+          - mtu 9216
+          - vpc 1
+        parents: "interface port-channel{{ port_channel_id }}"
+
+    - name: F5 interface config
+      nxos_config:
+        lines:
+          - switchport
+          - switchport mode trunk
+          - "switchport trunk allowed vlan {{ vlan_id }}"
+          - mtu 9216
+          - "channel-group {{ port_channel_id }} mode active"
+        parents: "interface {{ f5_interface }}"
+
+    - name: F5 interface no-shut
+      nxos_interface:
+        name: "{{ f5_interface }}"
+        admin_state: up
