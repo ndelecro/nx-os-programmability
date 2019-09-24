@@ -1,0 +1,90 @@
+---
+- name: Nexus 9K VXLAN EVPN Multi-Site Tenant-Routed Multicast
+  hosts: nxos_vteps
+  gather_facts: no
+
+  tasks:
+    - name: Host VLAN
+      nxos_vlan:
+        vlan_id: "{{ host.vlan }}"
+        mapped_vni: "{{ host.l2vni}}"
+
+    - name: Host SVI
+      nxos_interface:
+        name: "vlan{{ host.vlan }}"
+        state: present
+
+    - name: Host SVI configuration
+      nxos_config:
+        lines:
+          - "vrf member {{ vrf }}"
+          - "no ip redirects"
+          - "ip address {{ host.ip }}"
+          - "ip pim sparse-mode"
+          - "ip pim neighbor-policy NONE"
+          - "fabric forwarding mode anycast-gateway"
+        parents: "interface vlan{{ host.vlan }}"
+
+    - name: L3VNI
+      nxos_vlan:
+        vlan_id: "{{ l3vni_vlan }}"
+        mapped_vni: "{{ l3vni }}"
+
+    - name: L3VNI SVI
+      nxos_interface:
+        name: "vlan{{ l3vni_vlan }}"
+        state: present
+
+    - name: L3VNI SVI configuration
+      nxos_config:
+        lines:
+          - "vrf member {{ vrf }}"
+          - "no ip redirects"
+          - "ip forward"
+          - "ip pim sparse-mode"
+        parents: "interface vlan{{ l3vni_vlan }}"
+
+    - name: VRF
+      nxos_vrf:
+        name: "{{ vrf }}"
+        vni: "{{ l3vni }}"
+
+    - name: VRF PIM
+      nxos_config:
+        lines:
+          - "ip pim rp-address {{ rp }} group-list {{ group }}"
+        parents: "vrf context {{ vrf }}"
+
+    - name: VRF address family
+      nxos_config:
+        lines:
+          - "route-target both auto"
+          - "route-target both auto mvpn"
+          - "route-target both auto evpn"
+        parents: ["vrf context {{ vrf }}", "address-family ipv4 unicast"]
+
+    - name: Add L2VNI to overlay
+      nxos_vxlan_vtep_vni:
+        interface: nve1
+        vni: "{{ host.l2vni }}"
+        multicast_group: "{{ l2vni_mcast }}"
+
+    - name: Add L3VNI to overlay
+      nxos_config:
+        lines:
+          - "mcast-group {{ l3vni_mcast }}"
+        parents: ["interface nve1", "member vni {{ l3vni }} associate-vrf"]
+
+    - name: Host interface
+      nxos_l2_interface:
+        name: "{{ host.intf }}"
+        mode: trunk
+        trunk_vlans: "{{ host.vlan }}"
+
+    - name: Add VRF to BGP
+      nxos_bgp_af:
+        asn: "{{ asn }}"
+        vrf: "{{ vrf }}"
+        afi: ipv4
+        safi: unicast
+        redistribute: [['direct', 'direct_to_bgp']]

@@ -1,0 +1,48 @@
+---
+- name: Nexus 9K VXLAN EVPN Multi-Site Tenant-Routed Multicast
+  hosts: nxos_vteps
+  gather_facts: no
+
+  tasks:
+    - name: Remove VLAN from host interface
+      nxos_l2_interface:
+        name: "{{ host.intf }}"
+        mode: trunk
+        trunk_vlans: "{{ host.vlan }}"
+        state: absent
+
+    - name: Remove VNIs from overlay
+      nxos_vxlan_vtep_vni:
+        interface: nve1
+        vni: "{{ item }}"
+        state: absent
+      with_items:
+        - "{{ host.l2vni }}"
+        - "{{ l3vni }}"
+
+    - name: Remove VRF from BGP
+      nxos_bgp:
+        asn: "{{ asn }}"
+        vrf: "{{ vrf }}"
+        state: absent
+
+    - name: Remove VRF
+      nxos_vrf:
+        name: "{{ vrf }}"
+        state: absent
+
+    - name: Remove all SVIs
+      nxos_interface:
+        name: "vlan{{ item }}"
+        state: absent
+      with_items:
+        - "{{ host.vlan }}"
+        - "{{ l3vni_vlan }}"
+
+    - name: Remove all VLANs
+      nxos_vlan:
+        vlan_id: "{{ item }}"
+        state: absent
+      with_items:
+        - "{{ host.vlan }}"
+        - "{{ l3vni_vlan }}"

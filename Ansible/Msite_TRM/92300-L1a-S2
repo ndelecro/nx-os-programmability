@@ -1,0 +1,2 @@
+host: { vlan: 50, l2vni: 10050, ip: 192.168.50.1/24, intf: Ethernet1/1 }
+asn: 65002

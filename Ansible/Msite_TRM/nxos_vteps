@@ -1,0 +1,13 @@
+ansible_network_os: nxos
+ansible_connection: network_cli
+ansible_user: admin
+
+vrf: AnsibleFest
+l3vni_vlan: 70
+l3vni: 10070
+
+rp: 22.22.22.22
+group: 226.0.0.0/8
+
+l2vni_mcast: 239.1.1.10
+l3vni_mcast: 239.1.1.8
