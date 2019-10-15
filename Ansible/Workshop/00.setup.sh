@@ -19,6 +19,3 @@ for file in ~/Ansible/Workshop/*.{yml,txt,j2,xml}; do
 done
 
 sed -i "s/STUDENT_ID/$id/" /etc/ansible/group_vars/nxos_vteps
-
-echo 172.16.255.50 n9kv-1 >> /etc/hosts
-echo 172.16.255.51 n9kv-2 >> /etc/hosts

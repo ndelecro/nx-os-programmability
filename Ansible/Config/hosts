@@ -14,14 +14,3 @@ n9kv-2
 
 [install_nxos_cli]
 # FIXME: add your hosts here
-
-[workshop_admin]
-9372-1
-92160-1
-92160-2
-92160-3
-9336-FX2-1
-93180-FX-2
-n9kv-1
-n9kv-2
-n9kv-3
