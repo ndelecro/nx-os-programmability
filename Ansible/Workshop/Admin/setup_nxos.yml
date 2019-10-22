@@ -7,5 +7,5 @@
   tasks:
     - name: Setup workshop
       nxos_config:
-        src: setup.j2
+        src: setup_nxos.j2
         save_when: modified

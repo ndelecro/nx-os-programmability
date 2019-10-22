@@ -13,7 +13,7 @@ for id in {10..42}; do
     if [ "$action" = "create" ]; then
 	echo create
 	docker run -d --name=$container --hostname=$container -it ndelecro/nx-os-programmability bash
-	docker exec $container ~/Ansible/Workshop/00.setup.sh $id
+	docker exec $container ~/Ansible/Workshop/Admin/setup_ansible.sh $id
 	docker cp hosts.sh $container:/tmp
 	docker exec $container /tmp/hosts.sh
     fi
