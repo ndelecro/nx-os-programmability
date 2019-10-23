@@ -20,4 +20,4 @@ done
 
 sed -i "s/STUDENT_ID/$id/" /etc/ansible/group_vars/nxos_vteps
 
-cp netconf_config.py /usr/local/lib/python2.7/dist-packages/ansible/modules/network/netconf/
+cp ~/Ansible/Workshop/Admin/netconf_config.py /usr/local/lib/python2.7/dist-packages/ansible/modules/network/netconf/
